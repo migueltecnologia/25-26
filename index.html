@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,116 +7,188 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh;color:rgba(200,225,255,0.85)}
+        /* ===== VARIABLES DE TEMA ===== */
+        :root {
+            --bg-grad-1: #0a1628; --bg-grad-2: #0d2847; --bg-grad-3: #0f3460; --bg-grad-4: #0a2a5e; --bg-grad-5: #061224;
+            --text-primary: rgba(200,225,255,0.85); --text-heading: #ffffff;
+            --card-bg: rgba(10,22,50,0.55); --card-border: rgba(56,182,255,0.12); --card-shadow: rgba(0,0,0,0.25); --card-inset: rgba(56,182,255,0.08);
+            --nav-bg: rgba(10,22,50,0.4); --nav-border: rgba(56,182,255,0.15); --nav-text: rgba(200,230,255,0.85);
+            --nav-hover-bg: rgba(56,182,255,0.15); --nav-hover-border: rgba(56,182,255,0.5); --nav-active-bg: rgba(56,182,255,0.2);
+            --section-border: rgba(56,182,255,0.2); --sep-color: rgba(56,182,255,0.15);
+            --subtitle-color: rgba(180,220,255,0.6); --body-text: rgba(180,210,240,0.8);
+            --def-bg: rgba(56,182,255,0.06); --def-border: #38b6ff; --def-text: rgba(180,215,245,0.85);
+            --hl-bg: rgba(56,182,255,0.08); --hl-border: rgba(56,182,255,0.2); --hl-text: rgba(210,230,255,0.9);
+            --link-color: #38b6ff; --link-hover: #00d4ff; --link-glow: rgba(56,182,255,0.4);
+            --adv-color: #00d278; --dis-color: #ff6464;
+            --adv-border: rgba(0,210,120,0.5); --dis-border: rgba(255,100,100,0.5);
+            --env-bg: rgba(255,160,50,0.06); --env-border: rgba(255,160,50,0.2); --env-text: rgba(255,200,140,0.85);
+            --bullet-bg: rgba(56,182,255,0.5); --bullet-glow: rgba(56,182,255,0.3);
+            --rule-bullet-bg: rgba(255,100,100,0.45); --rule-bullet-glow: rgba(255,100,100,0.25);
+            --footer-text: rgba(140,180,220,0.4); --footer-border: rgba(56,182,255,0.08);
+            --toggle-bg: rgba(10,22,50,0.5); --toggle-border: rgba(56,182,255,0.3); --toggle-color: #38b6ff;
+            --toggle-hover-shadow: rgba(56,182,255,0.3);
+            --question-color: rgba(255,200,140,0.9);
+            --title-shadow-1: rgba(56,182,255,0.6); --title-shadow-2: rgba(56,182,255,0.3); --title-shadow-3: rgba(56,182,255,0.15);
+            --title-line-glow: rgba(56,182,255,0.5);
+            --node-h: 210; --node-s: 80; --node-l: 70;
+            --conn-r: 56; --conn-g: 182; --conn-b: 255;
+            --conn-br-r: 100; --conn-br-g: 210; --conn-br-b: 255;
+            --icon-color: #38b6ff; --icon-hover: #00d4ff; --icon-glow: rgba(56,182,255,0.5);
+        }
 
-        .bg-tech{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;background:linear-gradient(135deg,#0a1628 0%,#0d2847 25%,#0f3460 50%,#0a2a5e 75%,#061224 100%)}
+        [data-theme="light"] {
+            --bg-grad-1: #e4eef8; --bg-grad-2: #d0e2f4; --bg-grad-3: #bcd6f0; --bg-grad-4: #c5daf2; --bg-grad-5: #dde9f8;
+            --text-primary: rgba(20,50,80,0.88); --text-heading: #0a2540;
+            --card-bg: rgba(255,255,255,0.75); --card-border: rgba(50,130,210,0.18); --card-shadow: rgba(0,40,100,0.1); --card-inset: rgba(50,130,210,0.08);
+            --nav-bg: rgba(255,255,255,0.65); --nav-border: rgba(50,130,210,0.2); --nav-text: rgba(20,60,100,0.85);
+            --nav-hover-bg: rgba(50,130,210,0.1); --nav-hover-border: rgba(50,130,210,0.45); --nav-active-bg: rgba(50,130,210,0.15);
+            --section-border: rgba(50,130,210,0.22); --sep-color: rgba(50,130,210,0.15);
+            --subtitle-color: rgba(40,80,120,0.55); --body-text: rgba(30,60,90,0.78);
+            --def-bg: rgba(50,130,210,0.06); --def-border: #3080c0; --def-text: rgba(25,65,100,0.88);
+            --hl-bg: rgba(50,130,210,0.08); --hl-border: rgba(50,130,210,0.22); --hl-text: rgba(20,55,90,0.92);
+            --link-color: #2070b0; --link-hover: #185a90; --link-glow: rgba(32,112,176,0.3);
+            --adv-color: #0a8a50; --dis-color: #c03030;
+            --adv-border: rgba(10,138,80,0.5); --dis-border: rgba(192,48,48,0.5);
+            --env-bg: rgba(180,100,10,0.06); --env-border: rgba(180,100,10,0.22); --env-text: rgba(130,70,10,0.88);
+            --bullet-bg: rgba(50,130,210,0.45); --bullet-glow: rgba(50,130,210,0.15);
+            --rule-bullet-bg: rgba(192,48,48,0.4); --rule-bullet-glow: rgba(192,48,48,0.12);
+            --footer-text: rgba(80,120,160,0.5); --footer-border: rgba(50,130,210,0.1);
+            --toggle-bg: rgba(255,255,255,0.65); --toggle-border: rgba(50,130,210,0.3); --toggle-color: #2070b0;
+            --toggle-hover-shadow: rgba(50,130,210,0.25);
+            --question-color: rgba(130,70,10,0.9);
+            --title-shadow-1: transparent; --title-shadow-2: transparent; --title-shadow-3: transparent;
+            --title-line-glow: rgba(50,130,210,0.3);
+            --node-h: 210; --node-s: 65; --node-l: 42;
+            --conn-r: 70; --conn-g: 145; --conn-b: 215;
+            --conn-br-r: 55; --conn-br-g: 125; --conn-br-b: 195;
+            --icon-color: #2070b0; --icon-hover: #185a90; --icon-glow: rgba(32,112,176,0.3);
+        }
+
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh;color:var(--text-primary);transition:color .4s ease}
+        body, .card, .adv-card, .dis-card, .rule-card, .eval-card, .nav-link, .theme-toggle, .definition-box, .highlight-box, .env-note, .recovery-sub {transition: background-color .4s ease, color .4s ease, border-color .4s ease, box-shadow .4s ease}
+
+        .bg-tech{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;background:linear-gradient(135deg,var(--bg-grad-1) 0%,var(--bg-grad-2) 25%,var(--bg-grad-3) 50%,var(--bg-grad-4) 75%,var(--bg-grad-5) 100%);transition:background .5s ease}
         #networkCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1}
+
+        /* TOGGLE */
+        .theme-toggle{position:fixed;top:18px;right:18px;z-index:100;width:46px;height:46px;border-radius:50%;border:1px solid var(--toggle-border);background:var(--toggle-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--toggle-color);font-size:1.15rem;box-shadow:0 4px 16px rgba(0,0,0,0.15)}
+        .theme-toggle:hover{transform:scale(1.12);box-shadow:0 0 22px var(--toggle-hover-shadow),0 4px 16px rgba(0,0,0,0.15)}
+        .theme-toggle:active{transform:scale(0.95)}
+        .theme-toggle .icon-sun,.theme-toggle .icon-moon{position:absolute;transition:transform .4s ease,opacity .4s ease}
+        [data-theme="dark"] .theme-toggle .icon-sun{opacity:1;transform:rotate(0deg) scale(1)}
+        [data-theme="dark"] .theme-toggle .icon-moon{opacity:0;transform:rotate(-90deg) scale(0.5)}
+        [data-theme="light"] .theme-toggle .icon-sun{opacity:0;transform:rotate(90deg) scale(0.5)}
+        [data-theme="light"] .theme-toggle .icon-moon{opacity:1;transform:rotate(0deg) scale(1)}
 
         /* HEADER */
         .site-header{position:relative;width:100%;padding:50px 20px 20px;text-align:center;z-index:10}
-        .site-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.8rem,5vw,4rem);font-weight:900;color:#fff;letter-spacing:.08em;text-shadow:0 0 20px rgba(56,182,255,.6),0 0 40px rgba(56,182,255,.3);display:inline-block;position:relative}
-        .site-title::after{content:'';position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:60%;height:3px;background:linear-gradient(90deg,transparent,#38b6ff,#00d4ff,#38b6ff,transparent);border-radius:2px;box-shadow:0 0 12px rgba(56,182,255,.5)}
-        .site-subtitle{font-size:clamp(.7rem,1.8vw,.95rem);font-weight:300;color:rgba(180,220,255,.6);letter-spacing:.3em;text-transform:uppercase;margin-top:20px}
+        .site-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.8rem,5vw,4rem);font-weight:900;color:var(--text-heading);letter-spacing:.08em;text-shadow:0 0 20px var(--title-shadow-1),0 0 40px var(--title-shadow-2),0 0 80px var(--title-shadow-3);display:inline-block;position:relative;transition:color .4s ease,text-shadow .4s ease}
+        .site-title::after{content:'';position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:60%;height:3px;background:linear-gradient(90deg,transparent,var(--def-border),var(--link-hover),var(--def-border),transparent);border-radius:2px;box-shadow:0 0 12px var(--title-line-glow);transition:background .4s ease,box-shadow .4s ease}
+        .site-subtitle{font-size:clamp(.7rem,1.8vw,.95rem);font-weight:300;color:var(--subtitle-color);letter-spacing:.3em;text-transform:uppercase;margin-top:20px;transition:color .4s ease}
 
         /* NAV */
         .nav-bar{position:relative;z-index:10;display:flex;justify-content:center;padding:18px 20px 32px;flex-wrap:wrap;gap:0}
-        .nav-link{font-family:'Orbitron',sans-serif;font-size:clamp(.65rem,1.4vw,.88rem);font-weight:700;color:rgba(200,230,255,.85);text-decoration:none;padding:13px 28px;position:relative;transition:all .3s ease;letter-spacing:.04em;border:1px solid rgba(56,182,255,.15);background:rgba(10,22,50,.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+        .nav-link{font-family:'Orbitron',sans-serif;font-size:clamp(.65rem,1.4vw,.88rem);font-weight:700;color:var(--nav-text);text-decoration:none;padding:13px 28px;position:relative;transition:all .3s ease;letter-spacing:.04em;border:1px solid var(--nav-border);background:var(--nav-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
         .nav-link:first-child{border-radius:8px 0 0 8px}
         .nav-link:last-child{border-radius:0 8px 8px 0}
         .nav-link:not(:first-child){border-left:none}
-        .nav-link:hover{color:#fff;background:rgba(56,182,255,.15);border-color:rgba(56,182,255,.5);text-shadow:0 0 12px rgba(56,182,255,.7);box-shadow:0 0 20px rgba(56,182,255,.15),inset 0 0 20px rgba(56,182,255,.05)}
-        .nav-link::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%) scaleX(0);width:70%;height:2px;background:linear-gradient(90deg,transparent,#00d4ff,transparent);transition:transform .3s ease;border-radius:1px}
+        .nav-link:hover{color:var(--text-heading);background:var(--nav-hover-bg);border-color:var(--nav-hover-border);text-shadow:0 0 12px var(--toggle-hover-shadow);box-shadow:0 0 20px var(--toggle-hover-shadow),inset 0 0 20px rgba(56,182,255,.05)}
+        .nav-link::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%) scaleX(0);width:70%;height:2px;background:linear-gradient(90deg,transparent,var(--link-hover),transparent);transition:transform .3s ease;border-radius:1px}
         .nav-link:hover::before,.nav-link.active::before{transform:translateX(-50%) scaleX(1)}
-        .nav-link.active{color:#fff;background:rgba(56,182,255,.2);border-color:rgba(56,182,255,.5);text-shadow:0 0 12px rgba(56,182,255,.7)}
+        .nav-link.active{color:var(--text-heading);background:var(--nav-active-bg);border-color:var(--nav-hover-border);text-shadow:0 0 12px var(--toggle-hover-shadow)}
 
-        /* MAIN CONTENT */
+        /* MAIN */
         .main-content{position:relative;z-index:10;max-width:960px;margin:0 auto;padding:10px 20px 80px}
 
         /* SECTIONS */
         .content-section{margin-bottom:48px}
-        .section-title{font-family:'Orbitron',sans-serif;font-size:clamp(1rem,2.8vw,1.5rem);font-weight:700;color:#fff;margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid rgba(56,182,255,.2);display:flex;align-items:center;gap:12px;text-shadow:0 0 10px rgba(56,182,255,.3)}
-        .section-title i{color:#38b6ff;font-size:1.1em}
+        .section-title{font-family:'Orbitron',sans-serif;font-size:clamp(1rem,2.8vw,1.5rem);font-weight:700;color:var(--text-heading);margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--section-border);display:flex;align-items:center;gap:12px;transition:color .4s ease,border-color .4s ease}
+        .section-title i{color:var(--icon-color);font-size:1.1em;transition:color .4s ease}
 
         /* CARDS */
-        .card{background:rgba(10,22,50,.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(56,182,255,.12);border-radius:14px;padding:36px 32px;margin-bottom:20px;box-shadow:0 8px 32px rgba(0,0,0,.25),inset 0 1px 0 rgba(56,182,255,.08)}
-        .card h3{font-family:'Orbitron',sans-serif;font-size:clamp(.85rem,2vw,1.1rem);font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:10px}
-        .card h3 i{color:#38b6ff;font-size:.9em}
-        .card p,.card li{font-size:.95rem;font-weight:300;line-height:1.85;color:rgba(180,210,240,.8)}
+        .card{background:var(--card-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--card-border);border-radius:14px;padding:36px 32px;margin-bottom:20px;box-shadow:0 8px 32px var(--card-shadow),inset 0 1px 0 var(--card-inset)}
+        .card h3{font-family:'Orbitron',sans-serif;font-size:clamp(.85rem,2vw,1.1rem);font-weight:700;color:var(--text-heading);margin-bottom:16px;display:flex;align-items:center;gap:10px;transition:color .4s ease}
+        .card h3 i{color:var(--icon-color);font-size:.9em;transition:color .4s ease}
+        .card p,.card li{font-size:.95rem;font-weight:300;line-height:1.85;color:var(--body-text)}
         .card ul{list-style:none;padding:0;margin:0}
         .card ul li{padding:6px 0 6px 24px;position:relative}
-        .card ul li::before{content:'';position:absolute;left:0;top:15px;width:8px;height:8px;border-radius:50%;background:rgba(56,182,255,.5);box-shadow:0 0 6px rgba(56,182,255,.3)}
+        .card ul li::before{content:'';position:absolute;left:0;top:15px;width:8px;height:8px;border-radius:50%;background:var(--bullet-bg);box-shadow:0 0 6px var(--bullet-glow);transition:background .4s ease,box-shadow .4s ease}
 
-        /* DEFINITION BLOCK */
-        .definition-box{background:rgba(56,182,255,.06);border-left:3px solid #38b6ff;border-radius:0 10px 10px 0;padding:20px 24px;margin:20px 0}
-        .definition-box p{font-style:italic;color:rgba(180,215,245,.85)}
+        /* DEFINITION */
+        .definition-box{background:var(--def-bg);border-left:3px solid var(--def-border);border-radius:0 10px 10px 0;padding:20px 24px;margin:20px 0}
+        .definition-box p{font-style:italic;color:var(--def-text)}
         .definition-box ul{margin-top:12px}
         .definition-box ul li{font-style:italic}
 
-        /* HIGHLIGHT BOX */
-        .highlight-box{background:rgba(56,182,255,.08);border:1px solid rgba(56,182,255,.2);border-radius:12px;padding:24px 28px;margin:20px 0;text-align:center}
-        .highlight-box p{font-size:1rem;font-weight:400;color:rgba(210,230,255,.9);line-height:1.9}
+        /* HIGHLIGHT */
+        .highlight-box{background:var(--hl-bg);border:1px solid var(--hl-border);border-radius:12px;padding:24px 28px;margin:20px 0;text-align:center}
+        .highlight-box p{font-size:1rem;font-weight:400;color:var(--hl-text);line-height:1.9}
 
-        /* LINKS LIST */
+        /* LINKS */
         .links-list{list-style:none;padding:0;margin:16px 0 0}
         .links-list li{padding:8px 0 8px 0}
-        .links-list li a{color:#38b6ff;text-decoration:none;font-size:.9rem;font-weight:400;transition:all .3s ease;display:inline-flex;align-items:center;gap:8px}
-        .links-list li a:hover{color:#00d4ff;text-shadow:0 0 8px rgba(56,182,255,.4)}
+        .links-list li::before{display:none}
+        .links-list li a{color:var(--link-color);text-decoration:none;font-size:.9rem;font-weight:400;transition:all .3s ease;display:inline-flex;align-items:center;gap:8px}
+        .links-list li a:hover{color:var(--link-hover);text-shadow:0 0 8px var(--link-glow)}
         .links-list li a i{font-size:.75em}
 
-        /* ADVANTAGE / DISADVANTAGE GRID */
-        .adv-dis-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:0}
-        .adv-card,.dis-card{background:rgba(10,22,50,.5);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(56,182,255,.12);border-radius:14px;padding:28px 24px;box-shadow:0 6px 24px rgba(0,0,0,.2)}
-        .adv-card{border-top:3px solid rgba(0,210,120,.5)}
-        .dis-card{border-top:3px solid rgba(255,100,100,.5)}
+        /* ADV/DIS */
+        .adv-dis-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+        .adv-card,.dis-card{background:var(--card-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--card-border);border-radius:14px;padding:28px 24px;box-shadow:0 6px 24px var(--card-shadow)}
+        .adv-card{border-top:3px solid var(--adv-border)}
+        .dis-card{border-top:3px solid var(--dis-border)}
         .adv-card h3,.dis-card h3{font-family:'Orbitron',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:8px}
-        .adv-card h3{color:#00d278}
-        .dis-card h3{color:#ff6464}
+        .adv-card h3{color:var(--adv-color)}
+        .dis-card h3{color:var(--dis-color)}
         .adv-card h3 i,.dis-card h3 i{font-size:.85em}
-        .adv-card ul li::before{background:rgba(0,210,120,.5);box-shadow:0 0 6px rgba(0,210,120,.3)}
-        .dis-card ul li::before{background:rgba(255,100,100,.5);box-shadow:0 0 6px rgba(255,100,100,.3)}
+        .adv-card ul li::before{background:var(--adv-color);opacity:.5;box-shadow:0 0 6px var(--adv-color);transition:background .4s ease,box-shadow .4s ease}
+        .dis-card ul li::before{background:var(--dis-color);opacity:.5;box-shadow:0 0 6px var(--dis-color);transition:background .4s ease,box-shadow .4s ease}
+        .adv-card p,.dis-card p,.adv-card li,.dis-card li{color:var(--body-text)}
+        .adv-card strong{color:var(--adv-color)}
+        .dis-card strong{color:var(--dis-color)}
 
-        /* ENVIRONMENT NOTE */
-        .env-note{grid-column:1/-1;background:rgba(255,160,50,.06);border:1px solid rgba(255,160,50,.2);border-radius:12px;padding:20px 24px;margin-top:4px}
-        .env-note p{font-size:.93rem;color:rgba(255,200,140,.85);line-height:1.85}
+        /* ENV NOTE */
+        .env-note{grid-column:1/-1;background:var(--env-bg);border:1px solid var(--env-border);border-radius:12px;padding:20px 24px;margin-top:4px}
+        .env-note p{font-size:.93rem;color:var(--env-text);line-height:1.85}
 
-        /* RULES GRID */
+        /* RULES */
         .rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-        .rule-card{background:rgba(10,22,50,.5);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(56,182,255,.12);border-radius:14px;padding:28px 24px;box-shadow:0 6px 24px rgba(0,0,0,.2)}
-        .rule-card h3{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:700;color:#fff;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-        .rule-card h3 i{color:#38b6ff;font-size:.85em}
-        .rule-card .intro-text{font-size:.9rem;font-weight:300;color:rgba(180,210,240,.7);line-height:1.75;margin-bottom:14px}
-        .rule-card ul li::before{background:rgba(255,100,100,.45);box-shadow:0 0 6px rgba(255,100,100,.25);width:7px;height:7px}
+        .rule-card{background:var(--card-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--card-border);border-radius:14px;padding:28px 24px;box-shadow:0 6px 24px var(--card-shadow)}
+        .rule-card h3{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:700;color:var(--text-heading);margin-bottom:14px;display:flex;align-items:center;gap:8px;transition:color .4s ease}
+        .rule-card h3 i{color:var(--icon-color);font-size:.85em;transition:color .4s ease}
+        .rule-card .intro-text{font-size:.9rem;font-weight:300;color:var(--body-text);line-height:1.75;margin-bottom:14px}
+        .rule-card ul li::before{background:var(--rule-bullet-bg);box-shadow:0 0 6px var(--rule-bullet-glow);width:7px;height:7px;top:14px}
 
-        /* EVAL TABS */
+        /* EVAL */
         .eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-        .eval-card{background:rgba(10,22,50,.5);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(56,182,255,.12);border-radius:14px;padding:28px 24px;box-shadow:0 6px 24px rgba(0,0,0,.2)}
-        .eval-card h3{font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:700;color:#fff;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-        .eval-card h3 i{color:#38b6ff;font-size:.85em}
-        .eval-card p{font-size:.9rem;line-height:1.8}
+        .eval-card{background:var(--card-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--card-border);border-radius:14px;padding:28px 24px;box-shadow:0 6px 24px var(--card-shadow)}
+        .eval-card h3{font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:700;color:var(--text-heading);margin-bottom:14px;display:flex;align-items:center;gap:8px;transition:color .4s ease}
+        .eval-card h3 i{color:var(--icon-color);font-size:.85em;transition:color .4s ease}
+        .eval-card p{font-size:.9rem;line-height:1.8;color:var(--body-text)}
         .eval-card ul{margin-top:12px}
         .eval-card ul li{font-size:.88rem;padding:4px 0 4px 22px}
         .eval-card ul li::before{width:7px;height:7px;top:13px}
 
         /* RECOVERY */
         .recovery-block{margin-bottom:20px}
-        .recovery-block h3{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:700;color:#fff;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-        .recovery-block h3 i{color:#38b6ff;font-size:.85em}
-        .recovery-block p{font-size:.92rem;line-height:1.8;margin-bottom:10px}
+        .recovery-block h3{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:700;color:var(--text-heading);margin-bottom:14px;display:flex;align-items:center;gap:8px;transition:color .4s ease}
+        .recovery-block h3 i{color:var(--icon-color);font-size:.85em;transition:color .4s ease}
+        .recovery-block p{font-size:.92rem;line-height:1.8;margin-bottom:10px;color:var(--body-text)}
         .recovery-block ul{margin-bottom:16px}
         .recovery-block ul li{font-size:.88rem;padding:4px 0 4px 22px}
         .recovery-block ul li::before{width:7px;height:7px;top:13px}
-        .recovery-sub{margin-left:20px;padding-left:20px;border-left:2px solid rgba(56,182,255,.15);margin-bottom:18px}
-        .recovery-sub h4{font-family:'Orbitron',sans-serif;font-size:.78rem;font-weight:600;color:rgba(200,225,255,.8);margin-bottom:10px}
+        .recovery-sub{margin-left:20px;padding-left:20px;border-left:2px solid var(--section-border);margin-bottom:18px;transition:border-color .4s ease}
+        .recovery-sub h4{font-family:'Orbitron',sans-serif;font-size:.78rem;font-weight:600;color:var(--text-primary);margin-bottom:10px;transition:color .4s ease}
         .recovery-sub p{font-size:.88rem;margin-bottom:8px}
         .recovery-sub ul li{font-size:.86rem}
 
-        /* SEPARATOR */
-        .section-sep{height:1px;background:linear-gradient(90deg,transparent,rgba(56,182,255,.15),transparent);margin:8px 0 48px}
+        /* SEP */
+        .section-sep{height:1px;background:linear-gradient(90deg,transparent,var(--sep-color),transparent);margin:8px 0 48px;transition:background .4s ease}
 
         /* FOOTER */
-        .site-footer{position:relative;z-index:10;text-align:center;padding:30px 20px 40px;border-top:1px solid rgba(56,182,255,.08)}
-        .site-footer p{font-size:.8rem;font-weight:300;color:rgba(140,180,220,.4);letter-spacing:.05em}
+        .site-footer{position:relative;z-index:10;text-align:center;padding:30px 20px 40px;border-top:1px solid var(--footer-border);transition:border-color .4s ease}
+        .site-footer p{font-size:.8rem;font-weight:300;color:var(--footer-text);letter-spacing:.05em;transition:color .4s ease}
 
         /* MOBILE */
         @media(max-width:768px){
@@ -124,9 +196,10 @@
             .nav-bar{flex-direction:column;align-items:stretch;padding:10px 20px 28px;gap:4px}
             .nav-link:first-child{border-radius:8px 8px 0 0}
             .nav-link:last-child{border-radius:0 0 8px 8px}
-            .nav-link:not(:first-child){border-left:1px solid rgba(56,182,255,.15);border-top:none}
+            .nav-link:not(:first-child){border-left:1px solid var(--nav-border);border-top:none}
             .card{padding:24px 18px}
             .recovery-sub{margin-left:10px;padding-left:14px}
+            .theme-toggle{top:12px;right:12px;width:42px;height:42px;font-size:1rem}
         }
     </style>
 </head>
@@ -135,9 +208,15 @@
 <div class="bg-tech"></div>
 <canvas id="networkCanvas"></canvas>
 
+<!-- BOTÓN MODO CLARO/OSCURO -->
+<button class="theme-toggle" id="themeToggle" aria-label="Cambiar modo claro u oscuro">
+    <i class="fas fa-sun icon-sun"></i>
+    <i class="fas fa-moon icon-moon"></i>
+</button>
+
 <header class="site-header">
     <h1 class="site-title">MIGUELTECNOLOGIA</h1>
-    <p class="site-subtitle">Tecnología, Digitalización, Computación y Robótica en la ESO</p>
+    <p class="site-subtitle">Educación Tecnológica</p>
 </header>
 
 <nav class="nav-bar">
@@ -150,10 +229,8 @@
 
 <main class="main-content">
 
-    <!-- ===== ¿QUÉ ES LA TECNOLOGÍA? ===== -->
     <section class="content-section">
         <h2 class="section-title"><i class="fas fa-question-circle"></i> ¿Qué es la tecnología?</h2>
-
         <div class="card">
             <p>Esta es la pregunta con la que solemos comenzar el curso, en todos los niveles de la ESO y las respuestas son siempre las mismas:</p>
             <ul style="margin-top:14px">
@@ -163,7 +240,6 @@
             </ul>
             <p style="margin-top:16px">Como parece que la cosa no está muy clara, intentaremos responder a esta pregunta, ya que si no sabemos lo que es la tecnología, ¿Cómo vamos a estudiarla?.</p>
         </div>
-
         <div class="card">
             <p>Según el diccionario de la Real Academia Española, la tecnología es:</p>
             <div class="definition-box">
@@ -175,9 +251,8 @@
                 </ul>
             </div>
             <p style="margin-top:16px">Tampoco queda muy claro ya que: La primera acepción habla de conocimientos, la segunda habla de términos técnicos, la tercera habla del lenguaje científico o artístico y la cuarta habla de instrumentos y procedimientos.</p>
-            <p style="margin-top:10px">Esta definición nos dibuja el escenario de la tecnología, pero no se centra en una definición única. Para encontrar la definición vamos a analizar una historia llamada <strong style="color:#00d4ff">TECNOLOGÍA PRIMITIVA</strong>:</p>
+            <p style="margin-top:10px">Esta definición nos dibuja el escenario de la tecnología, pero no se centra en una definición única. Para encontrar la definición vamos a analizar una historia llamada <strong style="color:var(--link-hover)">TECNOLOGÍA PRIMITIVA</strong>:</p>
         </div>
-
         <div class="card">
             <p>Cuando un problema se puede solucionar construyendo algo, se dice que es un problema técnico.</p>
             <p style="margin-top:10px">Estos hombres primitivos tenían un problema técnico, tenían herramientas, materiales y conocimientos para utilizarlos, y los usaron para construir algo y resolver así su problema.</p>
@@ -187,7 +262,6 @@
                 <p>La tecnología es el conjunto de conocimientos, herramientas y materiales que tiene a su disposición una sociedad en una época determinada, para construir objetos que solucione sus problemas técnicos.</p>
             </div>
         </div>
-
         <div class="card">
             <p>Puedes encontrar más información sobre este tema en los siguientes enlaces y videos:</p>
             <ul class="links-list">
@@ -200,40 +274,35 @@
 
     <div class="section-sep"></div>
 
-    <!-- ===== VENTAJAS Y DESVENTAJAS ===== -->
     <section class="content-section">
         <h2 class="section-title"><i class="fas fa-balance-scale"></i> Ventajas y desventajas de la tecnología</h2>
-
         <div class="card" style="padding-bottom:20px">
             <p>En los vídeos anteriores hemos visto que la Tecnología nos ofrece grandes beneficios para una sociedad, pero…</p>
-            <p style="margin-top:8px;color:rgba(255,200,140,.9);font-weight:400">¿tiene también consecuencias negativas?</p>
+            <p style="margin-top:8px;color:var(--question-color);font-weight:400">¿tiene también consecuencias negativas?</p>
             <p style="margin-top:12px">A continuación os explicamos tanto los beneficios como las consecuencias de la tecnología en la sociedad:</p>
         </div>
-
         <div class="adv-dis-grid">
             <div class="adv-card">
                 <h3><i class="fas fa-thumbs-up"></i> VENTAJAS</h3>
                 <ul>
-                    <li><strong style="color:#00d278">Incremento de la productividad.</strong> El avance de la tecnología ha permitido crear herramientas que han incrementado la productividad en los últimos años. Se ha logrado gracias a la automatización de muchos procesos.</li>
-                    <li><strong style="color:#00d278">Mejoras en las comunicaciones.</strong> El transporte de personas y los métodos de comunicación han mejorado mucho gracias a la tecnología, brindando una mayor facilidad en las comunicaciones.</li>
-                    <li><strong style="color:#00d278">Reducción de costes.</strong> La creación de sistemas más eficientes o la automatización, han permitido el abaratamiento de los procesos productivos.</li>
-                    <li><strong style="color:#00d278">Acceso a la información.</strong> En la actualidad, tenemos acceso a información prácticamente ilimitada gracias a la tecnología.</li>
-                    <li><strong style="color:#00d278">Aparición de nuevos modelos de negocio.</strong> Sin duda, la tecnología ha supuesto una revolución en el ámbito empresarial. El avance de ésta ha dado lugar a un gran número de alternativas en el mundo emprendedor.</li>
-                    <li><strong style="color:#00d278">Avances en la ciencia.</strong> La creación de nuevas máquinas, destinadas a los investigadores, ha traído consigo grandes avances y descubrimientos en áreas tan importantes como la medicina.</li>
+                    <li><strong>Incremento de la productividad.</strong> El avance de la tecnología ha permitido crear herramientas que han incrementado la productividad en los últimos años. Se ha logrado gracias a la automatización de muchos procesos.</li>
+                    <li><strong>Mejoras en las comunicaciones.</strong> El transporte de personas y los métodos de comunicación han mejorado mucho gracias a la tecnología, brindando una mayor facilidad en las comunicaciones.</li>
+                    <li><strong>Reducción de costes.</strong> La creación de sistemas más eficientes o la automatización, han permitido el abaratamiento de los procesos productivos.</li>
+                    <li><strong>Acceso a la información.</strong> En la actualidad, tenemos acceso a información prácticamente ilimitada gracias a la tecnología.</li>
+                    <li><strong>Aparición de nuevos modelos de negocio.</strong> Sin duda, la tecnología ha supuesto una revolución en el ámbito empresarial. El avance de ésta ha dado lugar a un gran número de alternativas en el mundo emprendedor.</li>
+                    <li><strong>Avances en la ciencia.</strong> La creación de nuevas máquinas, destinadas a los investigadores, ha traído consigo grandes avances y descubrimientos en áreas tan importantes como la medicina.</li>
                 </ul>
             </div>
-
             <div class="dis-card">
                 <h3><i class="fas fa-thumbs-down"></i> DESVENTAJAS</h3>
                 <ul>
-                    <li><strong style="color:#ff6464">Aislamiento de las personas.</strong> La aparición de redes sociales o plataformas de contenido en streaming ha desembocado en un mayor grado de soledad en gran parte de los ciudadanos.</li>
-                    <li><strong style="color:#ff6464">Pérdida de privacidad.</strong> El uso de dispositivos tecnológicos recopila información del usuario y la distribuye entre multitud de empresas.</li>
-                    <li><strong style="color:#ff6464">Problemas psicológicos.</strong> La constante exposición y visualización de «prototipos de personas», ha desestabilizado psicológicamente a una parte de la sociedad. Generando depresiones u otros trastornos negativos.</li>
-                    <li><strong style="color:#ff6464">Sedentarismo.</strong> La sociedad presenta tasas de sedentarismo muy elevadas debido a la aparición de productos como los patinetes eléctricos.</li>
-                    <li><strong style="color:#ff6464">Medio ambiente.</strong> La tecnología permite llevar a cabo una producción más elevada de la que el medio ambiente puede soportar. Esta situación trae consigo el incremento de desastres naturales.</li>
+                    <li><strong>Aislamiento de las personas.</strong> La aparición de redes sociales o plataformas de contenido en streaming ha desembocado en un mayor grado de soledad en gran parte de los ciudadanos.</li>
+                    <li><strong>Pérdida de privacidad.</strong> El uso de dispositivos tecnológicos recopila información del usuario y la distribuye entre multitud de empresas.</li>
+                    <li><strong>Problemas psicológicos.</strong> La constante exposición y visualización de «prototipos de personas», ha desestabilizado psicológicamente a una parte de la sociedad. Generando depresiones u otros trastornos negativos.</li>
+                    <li><strong>Sedentarismo.</strong> La sociedad presenta tasas de sedentarismo muy elevadas debido a la aparición de productos como los patinetes eléctricos.</li>
+                    <li><strong>Medio ambiente.</strong> La tecnología permite llevar a cabo una producción más elevada de la que el medio ambiente puede soportar. Esta situación trae consigo el incremento de desastres naturales.</li>
                 </ul>
             </div>
-
             <div class="env-note">
                 <p>En general, siempre que se construye algo usando la tecnología, al mismo tiempo se está dañando al medio ambiente (Contaminación del aire, del agua o del terreno, sobreexplotación de recursos naturales, exterminio de especies animales y/o vegetales, etc.)</p>
             </div>
@@ -242,10 +311,8 @@
 
     <div class="section-sep"></div>
 
-    <!-- ===== CÓMO TRABAJAMOS ===== -->
     <section class="content-section">
         <h2 class="section-title"><i class="fas fa-tools"></i> ¿Cómo trabajamos en Tecnología?</h2>
-
         <div class="card">
             <p>Tecnología y Digitalización es una de las materias comunes obligatorias en 2º y 3º ESO.</p>
             <p style="margin-top:10px">Tecnología es una materia optativa en 4º ESO y está diseñada para el alumnado que piensa continuar sus estudios el itinerario de Ciclos Formativos o en el Bachillerato tecnológico.</p>
@@ -258,10 +325,8 @@
 
     <div class="section-sep"></div>
 
-    <!-- ===== COMPUTACIÓN Y ROBÓTICA ===== -->
     <section class="content-section">
         <h2 class="section-title"><i class="fas fa-robot"></i> ¿Cómo trabajamos en Computación y Robótica?</h2>
-
         <div class="card">
             <p>Computación y Robótica es una materia optativa que se imparte en los cursos de 1º, 2º y 3º de la ESO.</p>
             <p style="margin-top:10px">En Computación y Robótica también se utiliza el método de proyectos, iniciando al alumnado en los lenguajes de programación, construyendo pequeños robots y programando el código para que sigan sus instrucciones.</p>
@@ -273,10 +338,8 @@
 
     <div class="section-sep"></div>
 
-    <!-- ===== DIGITALIZACIÓN ===== -->
     <section class="content-section">
         <h2 class="section-title"><i class="fas fa-laptop"></i> ¿Cómo trabajamos en Digitalización?</h2>
-
         <div class="card">
             <p>Digitalización es una asignatura optativa de 4º ESO. Es un área imprescindible para desenvolverse en la sociedad actual.</p>
             <p style="margin-top:10px">Todas las clases se realizan con el ordenador y en ellas se tratan temas de hardware y software, creación y organización de documentos digitales, interacción en red o ciberseguridad.</p>
@@ -286,10 +349,8 @@
 
     <div class="section-sep"></div>
 
-    <!-- ===== NORMAS DE LAS AULAS ===== -->
     <section class="content-section">
         <h2 class="section-title"><i class="fas fa-clipboard-list"></i> Normas de las aulas específicas</h2>
-
         <div class="rules-grid">
             <div class="rule-card">
                 <h3><i class="fas fa-hammer"></i> Normas del aula taller</h3>
@@ -304,7 +365,6 @@
                     <li>Comer o beber en el aula taller</li>
                 </ul>
             </div>
-
             <div class="rule-card">
                 <h3><i class="fas fa-desktop"></i> Normas del aula de informática</h3>
                 <p class="intro-text">En el aula de informática, además de las normas de convivencia comunes a todas las aulas, se prohíbe lo siguiente:</p>
@@ -322,10 +382,8 @@
 
     <div class="section-sep"></div>
 
-    <!-- ===== PAUTAS DE EVALUACIÓN ===== -->
     <section class="content-section">
         <h2 class="section-title"><i class="fas fa-chart-bar"></i> Pautas de evaluación</h2>
-
         <div class="eval-grid">
             <div class="eval-card">
                 <h3><i class="fas fa-microchip"></i> Tecnología y Digitalización</h3>
@@ -337,7 +395,6 @@
                     <li>La evaluación será continua y se usará el cuaderno de Séneca para recoger las notas de las actividades y para obtener las notas medias de cada evaluación.</li>
                 </ul>
             </div>
-
             <div class="eval-card">
                 <h3><i class="fas fa-robot"></i> Computación y Robótica</h3>
                 <p>Para el desarrollo de las situaciones de aprendizaje de esta materia se utilizará el aula de informática y el aula taller de tecnología.</p>
@@ -348,7 +405,6 @@
                     <li>La evaluación será continua y se usará el cuaderno de Séneca para recoger las notas de las actividades y para obtener las notas medias de cada evaluación.</li>
                 </ul>
             </div>
-
             <div class="eval-card">
                 <h3><i class="fas fa-cogs"></i> Tecnología 4º ESO</h3>
                 <p>Para el desarrollo de las situaciones de aprendizaje de esta materia se utilizará el aula de informática y el aula taller de tecnología.</p>
@@ -359,7 +415,6 @@
                     <li>La evaluación será continua y se usará el cuaderno de Séneca para recoger las notas de las actividades y para obtener las notas medias de cada evaluación.</li>
                 </ul>
             </div>
-
             <div class="eval-card">
                 <h3><i class="fas fa-laptop-code"></i> Digitalización 4º ESO</h3>
                 <p>Para el desarrollo de las situaciones de aprendizaje de esta materia se utilizará el aula de informática.</p>
@@ -375,11 +430,8 @@
 
     <div class="section-sep"></div>
 
-    <!-- ===== PROCEDIMIENTOS DE RECUPERACIÓN ===== -->
     <section class="content-section">
         <h2 class="section-title"><i class="fas fa-redo-alt"></i> Procedimientos de recuperación</h2>
-
-        <!-- 2º ESO -->
         <div class="card">
             <div class="recovery-block">
                 <h3><i class="fas fa-user-graduate"></i> Alumnado de 2º ESO</h3>
@@ -392,8 +444,6 @@
                     </ul>
                 </div>
             </div>
-
-            <!-- 3º ESO -->
             <div class="recovery-block">
                 <h3><i class="fas fa-user-graduate"></i> Alumnado de 3º ESO</h3>
                 <div class="recovery-sub">
@@ -413,8 +463,6 @@
                     </ul>
                 </div>
             </div>
-
-            <!-- 4º ESO -->
             <div class="recovery-block">
                 <h3><i class="fas fa-user-graduate"></i> Alumnado de 4º ESO</h3>
                 <div class="recovery-sub">
@@ -444,21 +492,129 @@
 </footer>
 
 <script>
-    const canvas=document.getElementById('networkCanvas'),ctx=canvas.getContext('2d');
-    let width,height,nodes=[],mouse={x:-9999,y:-9999};
-    const NODE_COUNT=80,CONNECTION_DIST=180,MOUSE_DIST=220;
-    function resize(){width=canvas.width=window.innerWidth;height=canvas.height=window.innerHeight}
-    window.addEventListener('resize',resize);resize();
-    window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY});
-    window.addEventListener('mouseleave',()=>{mouse.x=-9999;mouse.y=-9999});
-    class Node{constructor(){this.x=Math.random()*width;this.y=Math.random()*height;this.vx=(Math.random()-.5)*.4;this.vy=(Math.random()-.5)*.4;this.radius=Math.random()*2.5+1;this.baseAlpha=Math.random()*.5+.3;this.alpha=this.baseAlpha;const h=200+Math.random()*20,s=80+Math.random()*20,l=60+Math.random()*20;this.glowColor=`hsla(${h},${s}%,${l}%,`}
-    update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>width)this.vx*=-1;if(this.y<0||this.y>height)this.vy*=-1;this.x=Math.max(0,Math.min(width,this.x));this.y=Math.max(0,Math.min(height,this.y));const dx=this.x-mouse.x,dy=this.y-mouse.y,d=Math.sqrt(dx*dx+dy*dy);this.alpha=d<MOUSE_DIST?this.baseAlpha+(1-d/MOUSE_DIST)*.6:this.alpha+(this.baseAlpha-this.alpha)*.05}
-    draw(){const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.radius*6);g.addColorStop(0,this.glowColor+(this.alpha*.4)+')');g.addColorStop(.4,this.glowColor+(this.alpha*.1)+')');g.addColorStop(1,this.glowColor+'0)');ctx.beginPath();ctx.arc(this.x,this.y,this.radius*6,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();ctx.beginPath();ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);ctx.fillStyle=this.glowColor+this.alpha+')';ctx.fill()}}
-    function initNodes(){nodes=[];for(let i=0;i<NODE_COUNT;i++)nodes.push(new Node)}initNodes();
-    window.addEventListener('resize',()=>{nodes.forEach(n=>{if(n.x>width)n.x=Math.random()*width;if(n.y>height)n.y=Math.random()*height})});
-    function drawConnections(){for(let i=0;i<nodes.length;i++){for(let j=i+1;j<nodes.length;j++){const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<CONNECTION_DIST){let a=(1-d/CONNECTION_DIST)*.25,ea=0;const mi=Math.sqrt((nodes[i].x-mouse.x)**2+(nodes[i].y-mouse.y)**2),mj=Math.sqrt((nodes[j].x-mouse.x)**2+(nodes[j].y-mouse.y)**2);if(mi<MOUSE_DIST||mj<MOUSE_DIST)ea=.2;ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);ctx.strokeStyle=`rgba(56,182,255,${a+ea})`;ctx.lineWidth=.6+ea*2;ctx.stroke()}}const dm=Math.sqrt((nodes[i].x-mouse.x)**2+(nodes[i].y-mouse.y)**2);if(dm<MOUSE_DIST){const a=(1-dm/MOUSE_DIST)*.35;ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(mouse.x,mouse.y);ctx.strokeStyle=`rgba(100,210,255,${a})`;ctx.lineWidth=.8;ctx.stroke()}}}
-    function animate(){ctx.clearRect(0,0,width,height);drawConnections();nodes.forEach(n=>{n.update();n.draw()});requestAnimationFrame(animate)}animate();
-    document.querySelectorAll('.nav-link').forEach(l=>{l.addEventListener('click',function(){document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('active'));this.classList.add('active')})});
+    // ===== TEMA CLARO/OSCURO =====
+    const html = document.documentElement;
+    const toggle = document.getElementById('themeToggle');
+
+    // Cargar preferencia guardada
+    const saved = localStorage.getItem('migueltcc-theme');
+    if (saved) {
+        html.setAttribute('data-theme', saved);
+    } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+        html.setAttribute('data-theme', 'light');
+    }
+
+    toggle.addEventListener('click', () => {
+        const current = html.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('migueltcc-theme', next);
+        updateCanvasTheme();
+    });
+
+    // ===== RED DE NODOS (Canvas) =====
+    const canvas = document.getElementById('networkCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, nodes = [], mouse = { x: -9999, y: -9999 };
+    const NODE_COUNT = 80, CONN_DIST = 180, MOUSE_DIST = 220;
+
+    // Colores del canvas según tema
+    let nodeH, nodeS, nodeL, connR, connG, connB, connBrR, connBrG, connBrB;
+
+    function updateCanvasTheme() {
+        const s = getComputedStyle(html);
+        nodeH = parseInt(s.getPropertyValue('--node-h'));
+        nodeS = parseInt(s.getPropertyValue('--node-s'));
+        nodeL = parseInt(s.getPropertyValue('--node-l'));
+        connR = parseInt(s.getPropertyValue('--conn-r'));
+        connG = parseInt(s.getPropertyValue('--conn-g'));
+        connB = parseInt(s.getPropertyValue('--conn-b'));
+        connBrR = parseInt(s.getPropertyValue('--conn-br-r'));
+        connBrG = parseInt(s.getPropertyValue('--conn-br-g'));
+        connBrB = parseInt(s.getPropertyValue('--conn-br-b'));
+    }
+    updateCanvasTheme();
+
+    // Observar cambios de tema para actualizar colores del canvas
+    const themeObserver = new MutationObserver(() => updateCanvasTheme());
+    themeObserver.observe(html, { attributes: true, attributeFilter: ['data-theme'] });
+
+    function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
+    window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+    window.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+    class Node {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 0.4;
+            this.vy = (Math.random() - 0.5) * 0.4;
+            this.radius = Math.random() * 2.5 + 1;
+            this.baseAlpha = Math.random() * 0.5 + 0.3;
+            this.alpha = this.baseAlpha;
+        }
+        update() {
+            this.x += this.vx; this.y += this.vy;
+            if (this.x < 0 || this.x > width) this.vx *= -1;
+            if (this.y < 0 || this.y > height) this.vy *= -1;
+            this.x = Math.max(0, Math.min(width, this.x));
+            this.y = Math.max(0, Math.min(height, this.y));
+            const dx = this.x - mouse.x, dy = this.y - mouse.y, d = Math.sqrt(dx * dx + dy * dy);
+            this.alpha = d < MOUSE_DIST ? this.baseAlpha + (1 - d / MOUSE_DIST) * 0.6 : this.alpha + (this.baseAlpha - this.alpha) * 0.05;
+        }
+        draw() {
+            const gc = `hsla(${nodeH},${nodeS}%,${nodeL}%,`;
+            const gr = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 6);
+            gr.addColorStop(0, gc + (this.alpha * 0.4) + ')');
+            gr.addColorStop(0.4, gc + (this.alpha * 0.1) + ')');
+            gr.addColorStop(1, gc + '0)');
+            ctx.beginPath(); ctx.arc(this.x, this.y, this.radius * 6, 0, Math.PI * 2); ctx.fillStyle = gr; ctx.fill();
+            ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = gc + this.alpha + ')'; ctx.fill();
+        }
+    }
+
+    function initNodes() { nodes = []; for (let i = 0; i < NODE_COUNT; i++) nodes.push(new Node()); }
+    initNodes();
+    window.addEventListener('resize', () => { nodes.forEach(n => { if (n.x > width) n.x = Math.random() * width; if (n.y > height) n.y = Math.random() * height; }); });
+
+    function drawConnections() {
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y, d = Math.sqrt(dx * dx + dy * dy);
+                if (d < CONN_DIST) {
+                    let a = (1 - d / CONN_DIST) * 0.25, ea = 0;
+                    const mi = Math.sqrt((nodes[i].x - mouse.x) ** 2 + (nodes[i].y - mouse.y) ** 2);
+                    const mj = Math.sqrt((nodes[j].x - mouse.x) ** 2 + (nodes[j].y - mouse.y) ** 2);
+                    if (mi < MOUSE_DIST || mj < MOUSE_DIST) ea = 0.2;
+                    ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y);
+                    ctx.strokeStyle = `rgba(${connR},${connG},${connB},${a + ea})`; ctx.lineWidth = 0.6 + ea * 2; ctx.stroke();
+                }
+            }
+            const dm = Math.sqrt((nodes[i].x - mouse.x) ** 2 + (nodes[i].y - mouse.y) ** 2);
+            if (dm < MOUSE_DIST) {
+                const a = (1 - dm / MOUSE_DIST) * 0.35;
+                ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(mouse.x, mouse.y);
+                ctx.strokeStyle = `rgba(${connBrR},${connBrG},${connBrB},${a})`; ctx.lineWidth = 0.8; ctx.stroke();
+            }
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        drawConnections();
+        nodes.forEach(n => { n.update(); n.draw(); });
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    // ===== MENÚ ACTIVO =====
+    document.querySelectorAll('.nav-link').forEach(l => {
+        l.addEventListener('click', function () {
+            document.querySelectorAll('.nav-link').forEach(x => x.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
 </script>
 </body>
 </html>
