@@ -1,13 +1,585 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <title>HTML</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="estilo.css">
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIGUELTECNOLOGIA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ===== FONDO CON NODOS Y LÍNEAS ===== */
+        .bg-tech {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(135deg, #0a1628 0%, #0d2847 25%, #0f3460 50%, #0a2a5e 75%, #061224 100%);
+        }
+
+        #networkCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* ===== HEADER / NOMBRE ===== */
+        .site-header {
+            position: relative;
+            width: 100%;
+            padding: 60px 20px 30px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .site-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 6vw, 4.5rem);
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 0.08em;
+            text-shadow:
+                0 0 20px rgba(56, 182, 255, 0.6),
+                0 0 40px rgba(56, 182, 255, 0.3),
+                0 0 80px rgba(56, 182, 255, 0.15);
+            position: relative;
+            display: inline-block;
+        }
+
+        .site-title::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #38b6ff, #00d4ff, #38b6ff, transparent);
+            border-radius: 2px;
+            box-shadow: 0 0 12px rgba(56, 182, 255, 0.5);
+        }
+
+        .site-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(0.75rem, 2vw, 1rem);
+            font-weight: 300;
+            color: rgba(180, 220, 255, 0.7);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-top: 22px;
+        }
+
+        /* ===== MENÚ DE NAVEGACIÓN ===== */
+        .nav-bar {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            padding: 20px 20px 40px;
+            flex-wrap: wrap;
+            gap: 0;
+        }
+
+        .nav-link {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(0.7rem, 1.5vw, 0.95rem);
+            font-weight: 700;
+            color: rgba(200, 230, 255, 0.85);
+            text-decoration: none;
+            padding: 14px 32px;
+            position: relative;
+            transition: all 0.3s ease;
+            letter-spacing: 0.05em;
+            border: 1px solid rgba(56, 182, 255, 0.15);
+            background: rgba(10, 22, 50, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .nav-link:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+
+        .nav-link:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+
+        .nav-link:not(:first-child) {
+            border-left: none;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+            background: rgba(56, 182, 255, 0.15);
+            border-color: rgba(56, 182, 255, 0.5);
+            text-shadow: 0 0 12px rgba(56, 182, 255, 0.7);
+            box-shadow:
+                0 0 20px rgba(56, 182, 255, 0.15),
+                inset 0 0 20px rgba(56, 182, 255, 0.05);
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 70%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+            transition: transform 0.3s ease;
+            border-radius: 1px;
+        }
+
+        .nav-link:hover::before {
+            transform: translateX(-50%) scaleX(1);
+        }
+
+        .nav-link.active {
+            color: #ffffff;
+            background: rgba(56, 182, 255, 0.2);
+            border-color: rgba(56, 182, 255, 0.5);
+            text-shadow: 0 0 12px rgba(56, 182, 255, 0.7);
+        }
+
+        .nav-link.active::before {
+            transform: translateX(-50%) scaleX(1);
+        }
+
+        /* ===== CONTENIDO PRINCIPAL ===== */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 20px 80px;
+        }
+
+        .welcome-card {
+            background: rgba(10, 22, 50, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(56, 182, 255, 0.15);
+            border-radius: 16px;
+            padding: 48px 40px;
+            text-align: center;
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(56, 182, 255, 0.1);
+        }
+
+        .welcome-icon {
+            font-size: 3rem;
+            color: #38b6ff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(56, 182, 255, 0.4);
+        }
+
+        .welcome-card h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
+            text-shadow: 0 0 10px rgba(56, 182, 255, 0.3);
+        }
+
+        .welcome-card p {
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: rgba(180, 210, 240, 0.8);
+            line-height: 1.8;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ===== CURSOS GRID ===== */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .course-card {
+            background: rgba(10, 22, 50, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(56, 182, 255, 0.12);
+            border-radius: 14px;
+            padding: 36px 24px;
+            text-align: center;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #38b6ff, transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .course-card:hover::before {
+            opacity: 1;
+        }
+
+        .course-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(56, 182, 255, 0.4);
+            box-shadow:
+                0 12px 40px rgba(0, 0, 0, 0.3),
+                0 0 30px rgba(56, 182, 255, 0.1);
+        }
+
+        .course-card .card-icon {
+            font-size: 2.2rem;
+            color: #38b6ff;
+            margin-bottom: 16px;
+            transition: all 0.4s ease;
+        }
+
+        .course-card:hover .card-icon {
+            color: #00d4ff;
+            text-shadow: 0 0 18px rgba(56, 182, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        .course-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+            letter-spacing: 0.03em;
+        }
+
+        .course-card p {
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: rgba(160, 200, 235, 0.7);
+            line-height: 1.6;
+        }
+
+        /* ===== FOOTER ===== */
+        .site-footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 30px 20px 40px;
+            border-top: 1px solid rgba(56, 182, 255, 0.08);
+        }
+
+        .site-footer p {
+            font-size: 0.8rem;
+            font-weight: 300;
+            color: rgba(140, 180, 220, 0.4);
+            letter-spacing: 0.05em;
+        }
+
+        /* ===== MOBILE ===== */
+        @media (max-width: 600px) {
+            .nav-bar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 10px 20px 30px;
+                gap: 4px;
+            }
+
+            .nav-link:first-child {
+                border-radius: 8px 8px 0 0;
+            }
+
+            .nav-link:last-child {
+                border-radius: 0 0 8px 8px;
+            }
+
+            .nav-link:not(:first-child) {
+                border-left: 1px solid rgba(56, 182, 255, 0.15);
+                border-top: none;
+            }
+
+            .welcome-card {
+                padding: 32px 20px;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 14px;
+            }
+
+            .course-card {
+                padding: 24px 16px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
 <body>
-  <p>Esta página web es una página HTML válida.</p>
+
+    <!-- Fondo degradado azul -->
+    <div class="bg-tech"></div>
+
+    <!-- Canvas con nodos y líneas de red -->
+    <canvas id="networkCanvas"></canvas>
+
+    <!-- Cabecera con nombre -->
+    <header class="site-header">
+        <h1 class="site-title">MIGUELTECNOLOGIA</h1>
+        <p class="site-subtitle">Educación Tecnológica</p>
+    </header>
+
+    <!-- Menú de navegación -->
+    <nav class="nav-bar">
+        <a href="#1eso" class="nav-link active">1º ESO</a>
+        <a href="#2eso" class="nav-link">2º ESO</a>
+        <a href="#3eso" class="nav-link">3º ESO</a>
+        <a href="#4eso" class="nav-link">4º ESO</a>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+        <div class="welcome-card">
+            <div class="welcome-icon"><i class="fas fa-microchip"></i></div>
+            <h2>Bienvenido a MIGUELTECNOLOGIA</h2>
+            <p>Recursos, apuntes y proyectos de Tecnología para Educación Secundaria Obligatoria. Selecciona tu curso para acceder al material.</p>
+        </div>
+
+        <div class="courses-grid">
+            <a href="#1eso" class="course-card">
+                <div class="card-icon"><i class="fas fa-puzzle-piece"></i></div>
+                <h3>1º ESO</h3>
+                <p>Iniciación a la tecnología, dibujo técnico básico y materiales.</p>
+            </a>
+            <a href="#2eso" class="course-card">
+                <div class="card-icon"><i class="fas fa-cogs"></i></div>
+                <h3>2º ESO</h3>
+                <p>Mecanismos, electricidad y estructuras.</p>
+            </a>
+            <a href="#3eso" class="course-card">
+                <div class="card-icon"><i class="fas fa-laptop-code"></i></div>
+                <h3>3º ESO</h3>
+                <p>Electrónica, robótica y diseño asistido por ordenador.</p>
+            </a>
+            <a href="#4eso" class="course-card">
+                <div class="card-icon"><i class="fas fa-rocket"></i></div>
+                <h3>4º ESO</h3>
+                <p>Automatización, programación y proyectos tecnológicos.</p>
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>© 2025 MIGUELTECNOLOGIA — Todos los derechos reservados</p>
+    </footer>
+
+    <script>
+        // ===== RED DE NODOS Y LÍNEAS (Canvas) =====
+        const canvas = document.getElementById('networkCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let nodes = [];
+        let mouse = { x: -9999, y: -9999 };
+        const NODE_COUNT = 80;
+        const CONNECTION_DIST = 180;
+        const MOUSE_DIST = 220;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // Seguimiento del ratón
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+        window.addEventListener('mouseleave', () => {
+            mouse.x = -9999;
+            mouse.y = -9999;
+        });
+
+        // Clase Nodo
+        class Node {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
+                this.radius = Math.random() * 2.5 + 1;
+                this.baseAlpha = Math.random() * 0.5 + 0.3;
+                this.alpha = this.baseAlpha;
+                // Color azul variable
+                const hue = 200 + Math.random() * 20;
+                const sat = 80 + Math.random() * 20;
+                const light = 60 + Math.random() * 20;
+                this.color = `hsl(${hue}, ${sat}%, ${light}%)`;
+                this.glowColor = `hsla(${hue}, ${sat}%, ${light}%, `;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Rebote suave en bordes
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+                this.x = Math.max(0, Math.min(width, this.x));
+                this.y = Math.max(0, Math.min(height, this.y));
+
+                // Brillo cerca del ratón
+                const dx = this.x - mouse.x;
+                const dy = this.y - mouse.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < MOUSE_DIST) {
+                    this.alpha = this.baseAlpha + (1 - dist / MOUSE_DIST) * 0.6;
+                } else {
+                    this.alpha += (this.baseAlpha - this.alpha) * 0.05;
+                }
+            }
+
+            draw() {
+                // Resplandor exterior
+                const glowRadius = this.radius * 6;
+                const grad = ctx.createRadialGradient(
+                    this.x, this.y, 0,
+                    this.x, this.y, glowRadius
+                );
+                grad.addColorStop(0, this.glowColor + (this.alpha * 0.4) + ')');
+                grad.addColorStop(0.4, this.glowColor + (this.alpha * 0.1) + ')');
+                grad.addColorStop(1, this.glowColor + '0)');
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, glowRadius, 0, Math.PI * 2);
+                ctx.fillStyle = grad;
+                ctx.fill();
+
+                // Punto central
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.glowColor + this.alpha + ')';
+                ctx.fill();
+            }
+        }
+
+        // Crear nodos
+        function initNodes() {
+            nodes = [];
+            for (let i = 0; i < NODE_COUNT; i++) {
+                nodes.push(new Node());
+            }
+        }
+        initNodes();
+        window.addEventListener('resize', () => {
+            // Re-distribuir nodos al cambiar tamaño
+            nodes.forEach(n => {
+                if (n.x > width) n.x = Math.random() * width;
+                if (n.y > height) n.y = Math.random() * height;
+            });
+        });
+
+        // Dibujar líneas de conexión
+        function drawConnections() {
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < CONNECTION_DIST) {
+                        const alpha = (1 - dist / CONNECTION_DIST) * 0.25;
+
+                        // Línea al ratón más brillante
+                        let extraAlpha = 0;
+                        const miDist = Math.sqrt(
+                            (nodes[i].x - mouse.x) ** 2 + (nodes[i].y - mouse.y) ** 2
+                        );
+                        const mjDist = Math.sqrt(
+                            (nodes[j].x - mouse.x) ** 2 + (nodes[j].y - mouse.y) ** 2
+                        );
+                        if (miDist < MOUSE_DIST || mjDist < MOUSE_DIST) {
+                            extraAlpha = 0.2;
+                        }
+
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.strokeStyle = `rgba(56, 182, 255, ${alpha + extraAlpha})`;
+                        ctx.lineWidth = 0.6 + extraAlpha * 2;
+                        ctx.stroke();
+                    }
+                }
+
+                // Líneas al ratón
+                const dxm = nodes[i].x - mouse.x;
+                const dym = nodes[i].y - mouse.y;
+                const distM = Math.sqrt(dxm * dxm + dym * dym);
+                if (distM < MOUSE_DIST) {
+                    const alpha = (1 - distM / MOUSE_DIST) * 0.35;
+                    ctx.beginPath();
+                    ctx.moveTo(nodes[i].x, nodes[i].y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.strokeStyle = `rgba(100, 210, 255, ${alpha})`;
+                    ctx.lineWidth = 0.8;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        // Bucle de animación
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            drawConnections();
+
+            nodes.forEach(node => {
+                node.update();
+                node.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // ===== MENÚ ACTIVO =====
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function (e) {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
 </body>
 </html>
