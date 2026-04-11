@@ -7,579 +7,458 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh;color:rgba(200,225,255,0.85)}
 
-        body {
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
+        .bg-tech{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;background:linear-gradient(135deg,#0a1628 0%,#0d2847 25%,#0f3460 50%,#0a2a5e 75%,#061224 100%)}
+        #networkCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1}
 
-        /* ===== FONDO CON NODOS Y LÍNEAS ===== */
-        .bg-tech {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            background: linear-gradient(135deg, #0a1628 0%, #0d2847 25%, #0f3460 50%, #0a2a5e 75%, #061224 100%);
-        }
+        /* HEADER */
+        .site-header{position:relative;width:100%;padding:50px 20px 20px;text-align:center;z-index:10}
+        .site-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.8rem,5vw,4rem);font-weight:900;color:#fff;letter-spacing:.08em;text-shadow:0 0 20px rgba(56,182,255,.6),0 0 40px rgba(56,182,255,.3);display:inline-block;position:relative}
+        .site-title::after{content:'';position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:60%;height:3px;background:linear-gradient(90deg,transparent,#38b6ff,#00d4ff,#38b6ff,transparent);border-radius:2px;box-shadow:0 0 12px rgba(56,182,255,.5)}
+        .site-subtitle{font-size:clamp(.7rem,1.8vw,.95rem);font-weight:300;color:rgba(180,220,255,.6);letter-spacing:.3em;text-transform:uppercase;margin-top:20px}
 
-        #networkCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
+        /* NAV */
+        .nav-bar{position:relative;z-index:10;display:flex;justify-content:center;padding:18px 20px 32px;flex-wrap:wrap;gap:0}
+        .nav-link{font-family:'Orbitron',sans-serif;font-size:clamp(.65rem,1.4vw,.88rem);font-weight:700;color:rgba(200,230,255,.85);text-decoration:none;padding:13px 28px;position:relative;transition:all .3s ease;letter-spacing:.04em;border:1px solid rgba(56,182,255,.15);background:rgba(10,22,50,.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+        .nav-link:first-child{border-radius:8px 0 0 8px}
+        .nav-link:last-child{border-radius:0 8px 8px 0}
+        .nav-link:not(:first-child){border-left:none}
+        .nav-link:hover{color:#fff;background:rgba(56,182,255,.15);border-color:rgba(56,182,255,.5);text-shadow:0 0 12px rgba(56,182,255,.7);box-shadow:0 0 20px rgba(56,182,255,.15),inset 0 0 20px rgba(56,182,255,.05)}
+        .nav-link::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%) scaleX(0);width:70%;height:2px;background:linear-gradient(90deg,transparent,#00d4ff,transparent);transition:transform .3s ease;border-radius:1px}
+        .nav-link:hover::before,.nav-link.active::before{transform:translateX(-50%) scaleX(1)}
+        .nav-link.active{color:#fff;background:rgba(56,182,255,.2);border-color:rgba(56,182,255,.5);text-shadow:0 0 12px rgba(56,182,255,.7)}
 
-        /* ===== HEADER / NOMBRE ===== */
-        .site-header {
-            position: relative;
-            width: 100%;
-            padding: 60px 20px 30px;
-            text-align: center;
-            z-index: 10;
-        }
+        /* MAIN CONTENT */
+        .main-content{position:relative;z-index:10;max-width:960px;margin:0 auto;padding:10px 20px 80px}
 
-        .site-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2rem, 6vw, 4.5rem);
-            font-weight: 900;
-            color: #ffffff;
-            letter-spacing: 0.08em;
-            text-shadow:
-                0 0 20px rgba(56, 182, 255, 0.6),
-                0 0 40px rgba(56, 182, 255, 0.3),
-                0 0 80px rgba(56, 182, 255, 0.15);
-            position: relative;
-            display: inline-block;
-        }
+        /* SECTIONS */
+        .content-section{margin-bottom:48px}
+        .section-title{font-family:'Orbitron',sans-serif;font-size:clamp(1rem,2.8vw,1.5rem);font-weight:700;color:#fff;margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid rgba(56,182,255,.2);display:flex;align-items:center;gap:12px;text-shadow:0 0 10px rgba(56,182,255,.3)}
+        .section-title i{color:#38b6ff;font-size:1.1em}
 
-        .site-title::after {
-            content: '';
-            position: absolute;
-            bottom: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #38b6ff, #00d4ff, #38b6ff, transparent);
-            border-radius: 2px;
-            box-shadow: 0 0 12px rgba(56, 182, 255, 0.5);
-        }
+        /* CARDS */
+        .card{background:rgba(10,22,50,.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(56,182,255,.12);border-radius:14px;padding:36px 32px;margin-bottom:20px;box-shadow:0 8px 32px rgba(0,0,0,.25),inset 0 1px 0 rgba(56,182,255,.08)}
+        .card h3{font-family:'Orbitron',sans-serif;font-size:clamp(.85rem,2vw,1.1rem);font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+        .card h3 i{color:#38b6ff;font-size:.9em}
+        .card p,.card li{font-size:.95rem;font-weight:300;line-height:1.85;color:rgba(180,210,240,.8)}
+        .card ul{list-style:none;padding:0;margin:0}
+        .card ul li{padding:6px 0 6px 24px;position:relative}
+        .card ul li::before{content:'';position:absolute;left:0;top:15px;width:8px;height:8px;border-radius:50%;background:rgba(56,182,255,.5);box-shadow:0 0 6px rgba(56,182,255,.3)}
 
-        .site-subtitle {
-            font-family: 'Inter', sans-serif;
-            font-size: clamp(0.75rem, 2vw, 1rem);
-            font-weight: 300;
-            color: rgba(180, 220, 255, 0.7);
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            margin-top: 22px;
-        }
+        /* DEFINITION BLOCK */
+        .definition-box{background:rgba(56,182,255,.06);border-left:3px solid #38b6ff;border-radius:0 10px 10px 0;padding:20px 24px;margin:20px 0}
+        .definition-box p{font-style:italic;color:rgba(180,215,245,.85)}
+        .definition-box ul{margin-top:12px}
+        .definition-box ul li{font-style:italic}
 
-        /* ===== MENÚ DE NAVEGACIÓN ===== */
-        .nav-bar {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            justify-content: center;
-            padding: 20px 20px 40px;
-            flex-wrap: wrap;
-            gap: 0;
-        }
+        /* HIGHLIGHT BOX */
+        .highlight-box{background:rgba(56,182,255,.08);border:1px solid rgba(56,182,255,.2);border-radius:12px;padding:24px 28px;margin:20px 0;text-align:center}
+        .highlight-box p{font-size:1rem;font-weight:400;color:rgba(210,230,255,.9);line-height:1.9}
 
-        .nav-link {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(0.7rem, 1.5vw, 0.95rem);
-            font-weight: 700;
-            color: rgba(200, 230, 255, 0.85);
-            text-decoration: none;
-            padding: 14px 32px;
-            position: relative;
-            transition: all 0.3s ease;
-            letter-spacing: 0.05em;
-            border: 1px solid rgba(56, 182, 255, 0.15);
-            background: rgba(10, 22, 50, 0.4);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
+        /* LINKS LIST */
+        .links-list{list-style:none;padding:0;margin:16px 0 0}
+        .links-list li{padding:8px 0 8px 0}
+        .links-list li a{color:#38b6ff;text-decoration:none;font-size:.9rem;font-weight:400;transition:all .3s ease;display:inline-flex;align-items:center;gap:8px}
+        .links-list li a:hover{color:#00d4ff;text-shadow:0 0 8px rgba(56,182,255,.4)}
+        .links-list li a i{font-size:.75em}
 
-        .nav-link:first-child {
-            border-radius: 8px 0 0 8px;
-        }
+        /* ADVANTAGE / DISADVANTAGE GRID */
+        .adv-dis-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:0}
+        .adv-card,.dis-card{background:rgba(10,22,50,.5);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(56,182,255,.12);border-radius:14px;padding:28px 24px;box-shadow:0 6px 24px rgba(0,0,0,.2)}
+        .adv-card{border-top:3px solid rgba(0,210,120,.5)}
+        .dis-card{border-top:3px solid rgba(255,100,100,.5)}
+        .adv-card h3,.dis-card h3{font-family:'Orbitron',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+        .adv-card h3{color:#00d278}
+        .dis-card h3{color:#ff6464}
+        .adv-card h3 i,.dis-card h3 i{font-size:.85em}
+        .adv-card ul li::before{background:rgba(0,210,120,.5);box-shadow:0 0 6px rgba(0,210,120,.3)}
+        .dis-card ul li::before{background:rgba(255,100,100,.5);box-shadow:0 0 6px rgba(255,100,100,.3)}
 
-        .nav-link:last-child {
-            border-radius: 0 8px 8px 0;
-        }
+        /* ENVIRONMENT NOTE */
+        .env-note{grid-column:1/-1;background:rgba(255,160,50,.06);border:1px solid rgba(255,160,50,.2);border-radius:12px;padding:20px 24px;margin-top:4px}
+        .env-note p{font-size:.93rem;color:rgba(255,200,140,.85);line-height:1.85}
 
-        .nav-link:not(:first-child) {
-            border-left: none;
-        }
+        /* RULES GRID */
+        .rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+        .rule-card{background:rgba(10,22,50,.5);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(56,182,255,.12);border-radius:14px;padding:28px 24px;box-shadow:0 6px 24px rgba(0,0,0,.2)}
+        .rule-card h3{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:700;color:#fff;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+        .rule-card h3 i{color:#38b6ff;font-size:.85em}
+        .rule-card .intro-text{font-size:.9rem;font-weight:300;color:rgba(180,210,240,.7);line-height:1.75;margin-bottom:14px}
+        .rule-card ul li::before{background:rgba(255,100,100,.45);box-shadow:0 0 6px rgba(255,100,100,.25);width:7px;height:7px}
 
-        .nav-link:hover {
-            color: #ffffff;
-            background: rgba(56, 182, 255, 0.15);
-            border-color: rgba(56, 182, 255, 0.5);
-            text-shadow: 0 0 12px rgba(56, 182, 255, 0.7);
-            box-shadow:
-                0 0 20px rgba(56, 182, 255, 0.15),
-                inset 0 0 20px rgba(56, 182, 255, 0.05);
-        }
+        /* EVAL TABS */
+        .eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+        .eval-card{background:rgba(10,22,50,.5);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(56,182,255,.12);border-radius:14px;padding:28px 24px;box-shadow:0 6px 24px rgba(0,0,0,.2)}
+        .eval-card h3{font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:700;color:#fff;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+        .eval-card h3 i{color:#38b6ff;font-size:.85em}
+        .eval-card p{font-size:.9rem;line-height:1.8}
+        .eval-card ul{margin-top:12px}
+        .eval-card ul li{font-size:.88rem;padding:4px 0 4px 22px}
+        .eval-card ul li::before{width:7px;height:7px;top:13px}
 
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%) scaleX(0);
-            width: 70%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
-            transition: transform 0.3s ease;
-            border-radius: 1px;
-        }
+        /* RECOVERY */
+        .recovery-block{margin-bottom:20px}
+        .recovery-block h3{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:700;color:#fff;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+        .recovery-block h3 i{color:#38b6ff;font-size:.85em}
+        .recovery-block p{font-size:.92rem;line-height:1.8;margin-bottom:10px}
+        .recovery-block ul{margin-bottom:16px}
+        .recovery-block ul li{font-size:.88rem;padding:4px 0 4px 22px}
+        .recovery-block ul li::before{width:7px;height:7px;top:13px}
+        .recovery-sub{margin-left:20px;padding-left:20px;border-left:2px solid rgba(56,182,255,.15);margin-bottom:18px}
+        .recovery-sub h4{font-family:'Orbitron',sans-serif;font-size:.78rem;font-weight:600;color:rgba(200,225,255,.8);margin-bottom:10px}
+        .recovery-sub p{font-size:.88rem;margin-bottom:8px}
+        .recovery-sub ul li{font-size:.86rem}
 
-        .nav-link:hover::before {
-            transform: translateX(-50%) scaleX(1);
-        }
+        /* SEPARATOR */
+        .section-sep{height:1px;background:linear-gradient(90deg,transparent,rgba(56,182,255,.15),transparent);margin:8px 0 48px}
 
-        .nav-link.active {
-            color: #ffffff;
-            background: rgba(56, 182, 255, 0.2);
-            border-color: rgba(56, 182, 255, 0.5);
-            text-shadow: 0 0 12px rgba(56, 182, 255, 0.7);
-        }
+        /* FOOTER */
+        .site-footer{position:relative;z-index:10;text-align:center;padding:30px 20px 40px;border-top:1px solid rgba(56,182,255,.08)}
+        .site-footer p{font-size:.8rem;font-weight:300;color:rgba(140,180,220,.4);letter-spacing:.05em}
 
-        .nav-link.active::before {
-            transform: translateX(-50%) scaleX(1);
-        }
-
-        /* ===== CONTENIDO PRINCIPAL ===== */
-        .main-content {
-            position: relative;
-            z-index: 10;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px 20px 80px;
-        }
-
-        .welcome-card {
-            background: rgba(10, 22, 50, 0.55);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(56, 182, 255, 0.15);
-            border-radius: 16px;
-            padding: 48px 40px;
-            text-align: center;
-            box-shadow:
-                0 8px 32px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(56, 182, 255, 0.1);
-        }
-
-        .welcome-icon {
-            font-size: 3rem;
-            color: #38b6ff;
-            margin-bottom: 20px;
-            text-shadow: 0 0 20px rgba(56, 182, 255, 0.4);
-        }
-
-        .welcome-card h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 16px;
-            text-shadow: 0 0 10px rgba(56, 182, 255, 0.3);
-        }
-
-        .welcome-card p {
-            font-size: 1.05rem;
-            font-weight: 300;
-            color: rgba(180, 210, 240, 0.8);
-            line-height: 1.8;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        /* ===== CURSOS GRID ===== */
-        .courses-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 24px;
-            margin-top: 48px;
-        }
-
-        .course-card {
-            background: rgba(10, 22, 50, 0.5);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(56, 182, 255, 0.12);
-            border-radius: 14px;
-            padding: 36px 24px;
-            text-align: center;
-            transition: all 0.4s ease;
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .course-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #38b6ff, transparent);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .course-card:hover::before {
-            opacity: 1;
-        }
-
-        .course-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(56, 182, 255, 0.4);
-            box-shadow:
-                0 12px 40px rgba(0, 0, 0, 0.3),
-                0 0 30px rgba(56, 182, 255, 0.1);
-        }
-
-        .course-card .card-icon {
-            font-size: 2.2rem;
-            color: #38b6ff;
-            margin-bottom: 16px;
-            transition: all 0.4s ease;
-        }
-
-        .course-card:hover .card-icon {
-            color: #00d4ff;
-            text-shadow: 0 0 18px rgba(56, 182, 255, 0.5);
-            transform: scale(1.1);
-        }
-
-        .course-card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 10px;
-            letter-spacing: 0.03em;
-        }
-
-        .course-card p {
-            font-size: 0.85rem;
-            font-weight: 300;
-            color: rgba(160, 200, 235, 0.7);
-            line-height: 1.6;
-        }
-
-        /* ===== FOOTER ===== */
-        .site-footer {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            padding: 30px 20px 40px;
-            border-top: 1px solid rgba(56, 182, 255, 0.08);
-        }
-
-        .site-footer p {
-            font-size: 0.8rem;
-            font-weight: 300;
-            color: rgba(140, 180, 220, 0.4);
-            letter-spacing: 0.05em;
-        }
-
-        /* ===== MOBILE ===== */
-        @media (max-width: 600px) {
-            .nav-bar {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 10px 20px 30px;
-                gap: 4px;
-            }
-
-            .nav-link:first-child {
-                border-radius: 8px 8px 0 0;
-            }
-
-            .nav-link:last-child {
-                border-radius: 0 0 8px 8px;
-            }
-
-            .nav-link:not(:first-child) {
-                border-left: 1px solid rgba(56, 182, 255, 0.15);
-                border-top: none;
-            }
-
-            .welcome-card {
-                padding: 32px 20px;
-            }
-
-            .courses-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 14px;
-            }
-
-            .course-card {
-                padding: 24px 16px;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .courses-grid {
-                grid-template-columns: 1fr;
-            }
+        /* MOBILE */
+        @media(max-width:768px){
+            .adv-dis-grid,.rules-grid,.eval-grid{grid-template-columns:1fr}
+            .nav-bar{flex-direction:column;align-items:stretch;padding:10px 20px 28px;gap:4px}
+            .nav-link:first-child{border-radius:8px 8px 0 0}
+            .nav-link:last-child{border-radius:0 0 8px 8px}
+            .nav-link:not(:first-child){border-left:1px solid rgba(56,182,255,.15);border-top:none}
+            .card{padding:24px 18px}
+            .recovery-sub{margin-left:10px;padding-left:14px}
         }
     </style>
 </head>
 <body>
 
-    <!-- Fondo degradado azul -->
-    <div class="bg-tech"></div>
+<div class="bg-tech"></div>
+<canvas id="networkCanvas"></canvas>
 
-    <!-- Canvas con nodos y líneas de red -->
-    <canvas id="networkCanvas"></canvas>
+<header class="site-header">
+    <h1 class="site-title">MIGUELTECNOLOGIA</h1>
+    <p class="site-subtitle">Educación Tecnológica</p>
+</header>
 
-    <!-- Cabecera con nombre -->
-    <header class="site-header">
-        <h1 class="site-title">MIGUELTECNOLOGIA</h1>
-        <p class="site-subtitle">Educación Tecnológica</p>
-    </header>
+<nav class="nav-bar">
+    <a href="#inicio" class="nav-link active"><i class="fas fa-home" style="margin-right:6px;font-size:.85em"></i>INICIO</a>
+    <a href="#1eso" class="nav-link">1º ESO</a>
+    <a href="#2eso" class="nav-link">2º ESO</a>
+    <a href="#3eso" class="nav-link">3º ESO</a>
+    <a href="#4eso" class="nav-link">4º ESO</a>
+</nav>
 
-    <!-- Menú de navegación -->
-    <nav class="nav-bar">
-        <a href="#1eso" class="nav-link active">1º ESO</a>
-        <a href="#2eso" class="nav-link">2º ESO</a>
-        <a href="#3eso" class="nav-link">3º ESO</a>
-        <a href="#4eso" class="nav-link">4º ESO</a>
-    </nav>
+<main class="main-content">
 
-    <!-- Contenido principal -->
-    <main class="main-content">
-        <div class="welcome-card">
-            <div class="welcome-icon"><i class="fas fa-microchip"></i></div>
-            <h2>Bienvenido a MIGUELTECNOLOGIA</h2>
-            <p>Recursos, apuntes y proyectos de Tecnología para Educación Secundaria Obligatoria. Selecciona tu curso para acceder al material.</p>
+    <!-- ===== ¿QUÉ ES LA TECNOLOGÍA? ===== -->
+    <section class="content-section">
+        <h2 class="section-title"><i class="fas fa-question-circle"></i> ¿Qué es la tecnología?</h2>
+
+        <div class="card">
+            <p>Esta es la pregunta con la que solemos comenzar el curso, en todos los niveles de la ESO y las respuestas son siempre las mismas:</p>
+            <ul style="margin-top:14px">
+                <li>Es una asignatura.</li>
+                <li>Es la ciencia que se encarga de los inventos.</li>
+                <li>Es construir con herramientas.</li>
+            </ul>
+            <p style="margin-top:16px">Como parece que la cosa no está muy clara, intentaremos responder a esta pregunta, ya que si no sabemos lo que es la tecnología, ¿Cómo vamos a estudiarla?.</p>
         </div>
 
-        <div class="courses-grid">
-            <a href="#1eso" class="course-card">
-                <div class="card-icon"><i class="fas fa-puzzle-piece"></i></div>
-                <h3>1º ESO</h3>
-                <p>Iniciación a la tecnología, dibujo técnico básico y materiales.</p>
-            </a>
-            <a href="#2eso" class="course-card">
-                <div class="card-icon"><i class="fas fa-cogs"></i></div>
-                <h3>2º ESO</h3>
-                <p>Mecanismos, electricidad y estructuras.</p>
-            </a>
-            <a href="#3eso" class="course-card">
-                <div class="card-icon"><i class="fas fa-laptop-code"></i></div>
-                <h3>3º ESO</h3>
-                <p>Electrónica, robótica y diseño asistido por ordenador.</p>
-            </a>
-            <a href="#4eso" class="course-card">
-                <div class="card-icon"><i class="fas fa-rocket"></i></div>
-                <h3>4º ESO</h3>
-                <p>Automatización, programación y proyectos tecnológicos.</p>
-            </a>
+        <div class="card">
+            <p>Según el diccionario de la Real Academia Española, la tecnología es:</p>
+            <div class="definition-box">
+                <ul>
+                    <li>Conjunto de teorías y de técnicas que permiten el aprovechamiento práctico del conocimiento científico.</li>
+                    <li>Tratado de los términos técnicos.</li>
+                    <li>Lenguaje propio de una ciencia o de un arte.</li>
+                    <li>Conjunto de los instrumentos y procedimientos industriales de un determinado sector o producto.</li>
+                </ul>
+            </div>
+            <p style="margin-top:16px">Tampoco queda muy claro ya que: La primera acepción habla de conocimientos, la segunda habla de términos técnicos, la tercera habla del lenguaje científico o artístico y la cuarta habla de instrumentos y procedimientos.</p>
+            <p style="margin-top:10px">Esta definición nos dibuja el escenario de la tecnología, pero no se centra en una definición única. Para encontrar la definición vamos a analizar una historia llamada <strong style="color:#00d4ff">TECNOLOGÍA PRIMITIVA</strong>:</p>
         </div>
-    </main>
 
-    <!-- Footer -->
-    <footer class="site-footer">
-        <p>© 2025 MIGUELTECNOLOGIA — Todos los derechos reservados</p>
-    </footer>
+        <div class="card">
+            <p>Cuando un problema se puede solucionar construyendo algo, se dice que es un problema técnico.</p>
+            <p style="margin-top:10px">Estos hombres primitivos tenían un problema técnico, tenían herramientas, materiales y conocimientos para utilizarlos, y los usaron para construir algo y resolver así su problema.</p>
+            <p style="margin-top:10px">Cuanto más avanzada es una sociedad, dispone de mejores herramientas, materiales y conocimientos para construir soluciones.</p>
+            <p style="margin-top:10px">Luego se podría decir que:</p>
+            <div class="highlight-box">
+                <p>La tecnología es el conjunto de conocimientos, herramientas y materiales que tiene a su disposición una sociedad en una época determinada, para construir objetos que solucione sus problemas técnicos.</p>
+            </div>
+        </div>
 
-    <script>
-        // ===== RED DE NODOS Y LÍNEAS (Canvas) =====
-        const canvas = document.getElementById('networkCanvas');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        let nodes = [];
-        let mouse = { x: -9999, y: -9999 };
-        const NODE_COUNT = 80;
-        const CONNECTION_DIST = 180;
-        const MOUSE_DIST = 220;
+        <div class="card">
+            <p>Puedes encontrar más información sobre este tema en los siguientes enlaces y videos:</p>
+            <ul class="links-list">
+                <li><a href="http://es.wikipedia.org/wiki/Tecnología" target="_blank"><i class="fas fa-external-link-alt"></i> Wikipedia: http://es.wikipedia.org/wiki/Tecnología</a></li>
+                <li><a href="http://www.alegsa.com.ar/Dic/tecnologia.php" target="_blank"><i class="fas fa-external-link-alt"></i> Diccionario informático: http://www.alegsa.com.ar/Dic/tecnologia.php</a></li>
+                <li><a href="http://peapt.blogspot.com.es/p/que-es-la-tecnologia.html" target="_blank"><i class="fas fa-external-link-alt"></i> PEAPT: http://peapt.blogspot.com.es/p/que-es-la-tecnologia.html</a></li>
+            </ul>
+        </div>
+    </section>
 
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
+    <div class="section-sep"></div>
 
-        // Seguimiento del ratón
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-        });
-        window.addEventListener('mouseleave', () => {
-            mouse.x = -9999;
-            mouse.y = -9999;
-        });
+    <!-- ===== VENTAJAS Y DESVENTAJAS ===== -->
+    <section class="content-section">
+        <h2 class="section-title"><i class="fas fa-balance-scale"></i> Ventajas y desventajas de la tecnología</h2>
 
-        // Clase Nodo
-        class Node {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.4;
-                this.vy = (Math.random() - 0.5) * 0.4;
-                this.radius = Math.random() * 2.5 + 1;
-                this.baseAlpha = Math.random() * 0.5 + 0.3;
-                this.alpha = this.baseAlpha;
-                // Color azul variable
-                const hue = 200 + Math.random() * 20;
-                const sat = 80 + Math.random() * 20;
-                const light = 60 + Math.random() * 20;
-                this.color = `hsl(${hue}, ${sat}%, ${light}%)`;
-                this.glowColor = `hsla(${hue}, ${sat}%, ${light}%, `;
-            }
+        <div class="card" style="padding-bottom:20px">
+            <p>En los vídeos anteriores hemos visto que la Tecnología nos ofrece grandes beneficios para una sociedad, pero…</p>
+            <p style="margin-top:8px;color:rgba(255,200,140,.9);font-weight:400">¿tiene también consecuencias negativas?</p>
+            <p style="margin-top:12px">A continuación os explicamos tanto los beneficios como las consecuencias de la tecnología en la sociedad:</p>
+        </div>
 
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
+        <div class="adv-dis-grid">
+            <div class="adv-card">
+                <h3><i class="fas fa-thumbs-up"></i> VENTAJAS</h3>
+                <ul>
+                    <li><strong style="color:#00d278">Incremento de la productividad.</strong> El avance de la tecnología ha permitido crear herramientas que han incrementado la productividad en los últimos años. Se ha logrado gracias a la automatización de muchos procesos.</li>
+                    <li><strong style="color:#00d278">Mejoras en las comunicaciones.</strong> El transporte de personas y los métodos de comunicación han mejorado mucho gracias a la tecnología, brindando una mayor facilidad en las comunicaciones.</li>
+                    <li><strong style="color:#00d278">Reducción de costes.</strong> La creación de sistemas más eficientes o la automatización, han permitido el abaratamiento de los procesos productivos.</li>
+                    <li><strong style="color:#00d278">Acceso a la información.</strong> En la actualidad, tenemos acceso a información prácticamente ilimitada gracias a la tecnología.</li>
+                    <li><strong style="color:#00d278">Aparición de nuevos modelos de negocio.</strong> Sin duda, la tecnología ha supuesto una revolución en el ámbito empresarial. El avance de ésta ha dado lugar a un gran número de alternativas en el mundo emprendedor.</li>
+                    <li><strong style="color:#00d278">Avances en la ciencia.</strong> La creación de nuevas máquinas, destinadas a los investigadores, ha traído consigo grandes avances y descubrimientos en áreas tan importantes como la medicina.</li>
+                </ul>
+            </div>
 
-                // Rebote suave en bordes
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
-                this.x = Math.max(0, Math.min(width, this.x));
-                this.y = Math.max(0, Math.min(height, this.y));
+            <div class="dis-card">
+                <h3><i class="fas fa-thumbs-down"></i> DESVENTAJAS</h3>
+                <ul>
+                    <li><strong style="color:#ff6464">Aislamiento de las personas.</strong> La aparición de redes sociales o plataformas de contenido en streaming ha desembocado en un mayor grado de soledad en gran parte de los ciudadanos.</li>
+                    <li><strong style="color:#ff6464">Pérdida de privacidad.</strong> El uso de dispositivos tecnológicos recopila información del usuario y la distribuye entre multitud de empresas.</li>
+                    <li><strong style="color:#ff6464">Problemas psicológicos.</strong> La constante exposición y visualización de «prototipos de personas», ha desestabilizado psicológicamente a una parte de la sociedad. Generando depresiones u otros trastornos negativos.</li>
+                    <li><strong style="color:#ff6464">Sedentarismo.</strong> La sociedad presenta tasas de sedentarismo muy elevadas debido a la aparición de productos como los patinetes eléctricos.</li>
+                    <li><strong style="color:#ff6464">Medio ambiente.</strong> La tecnología permite llevar a cabo una producción más elevada de la que el medio ambiente puede soportar. Esta situación trae consigo el incremento de desastres naturales.</li>
+                </ul>
+            </div>
 
-                // Brillo cerca del ratón
-                const dx = this.x - mouse.x;
-                const dy = this.y - mouse.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < MOUSE_DIST) {
-                    this.alpha = this.baseAlpha + (1 - dist / MOUSE_DIST) * 0.6;
-                } else {
-                    this.alpha += (this.baseAlpha - this.alpha) * 0.05;
-                }
-            }
+            <div class="env-note">
+                <p>En general, siempre que se construye algo usando la tecnología, al mismo tiempo se está dañando al medio ambiente (Contaminación del aire, del agua o del terreno, sobreexplotación de recursos naturales, exterminio de especies animales y/o vegetales, etc.)</p>
+            </div>
+        </div>
+    </section>
 
-            draw() {
-                // Resplandor exterior
-                const glowRadius = this.radius * 6;
-                const grad = ctx.createRadialGradient(
-                    this.x, this.y, 0,
-                    this.x, this.y, glowRadius
-                );
-                grad.addColorStop(0, this.glowColor + (this.alpha * 0.4) + ')');
-                grad.addColorStop(0.4, this.glowColor + (this.alpha * 0.1) + ')');
-                grad.addColorStop(1, this.glowColor + '0)');
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, glowRadius, 0, Math.PI * 2);
-                ctx.fillStyle = grad;
-                ctx.fill();
+    <div class="section-sep"></div>
 
-                // Punto central
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = this.glowColor + this.alpha + ')';
-                ctx.fill();
-            }
-        }
+    <!-- ===== CÓMO TRABAJAMOS ===== -->
+    <section class="content-section">
+        <h2 class="section-title"><i class="fas fa-tools"></i> ¿Cómo trabajamos en Tecnología?</h2>
 
-        // Crear nodos
-        function initNodes() {
-            nodes = [];
-            for (let i = 0; i < NODE_COUNT; i++) {
-                nodes.push(new Node());
-            }
-        }
-        initNodes();
-        window.addEventListener('resize', () => {
-            // Re-distribuir nodos al cambiar tamaño
-            nodes.forEach(n => {
-                if (n.x > width) n.x = Math.random() * width;
-                if (n.y > height) n.y = Math.random() * height;
-            });
-        });
+        <div class="card">
+            <p>Tecnología y Digitalización es una de las materias comunes obligatorias en 2º y 3º ESO.</p>
+            <p style="margin-top:10px">Tecnología es una materia optativa en 4º ESO y está diseñada para el alumnado que piensa continuar sus estudios el itinerario de Ciclos Formativos o en el Bachillerato tecnológico.</p>
+            <p style="margin-top:10px">A través de situaciones de aprendizaje, se introducirán los contenidos y se realizarán actividades de consolidación tanto en clase como en el taller de tecnología.</p>
+            <p style="margin-top:10px">En tecnología empleamos el método de proyectos para aplicar los conocimientos adquiridos, mediante la construcción de maquetas de objetos o sistemas técnicos en el taller de tecnología.</p>
+            <p style="margin-top:10px">Además, en todos los niveles se usan las TIC, con el estudio y empleo de aplicaciones informáticas útiles en la edición y presentación de trabajos escritos y online, así como para búsqueda de información en Internet y el uso de simuladores.</p>
+            <p style="margin-top:10px">Y por último, también se estudiará algo de robótica y programación.</p>
+        </div>
+    </section>
 
-        // Dibujar líneas de conexión
-        function drawConnections() {
-            for (let i = 0; i < nodes.length; i++) {
-                for (let j = i + 1; j < nodes.length; j++) {
-                    const dx = nodes[i].x - nodes[j].x;
-                    const dy = nodes[i].y - nodes[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
+    <div class="section-sep"></div>
 
-                    if (dist < CONNECTION_DIST) {
-                        const alpha = (1 - dist / CONNECTION_DIST) * 0.25;
+    <!-- ===== COMPUTACIÓN Y ROBÓTICA ===== -->
+    <section class="content-section">
+        <h2 class="section-title"><i class="fas fa-robot"></i> ¿Cómo trabajamos en Computación y Robótica?</h2>
 
-                        // Línea al ratón más brillante
-                        let extraAlpha = 0;
-                        const miDist = Math.sqrt(
-                            (nodes[i].x - mouse.x) ** 2 + (nodes[i].y - mouse.y) ** 2
-                        );
-                        const mjDist = Math.sqrt(
-                            (nodes[j].x - mouse.x) ** 2 + (nodes[j].y - mouse.y) ** 2
-                        );
-                        if (miDist < MOUSE_DIST || mjDist < MOUSE_DIST) {
-                            extraAlpha = 0.2;
-                        }
+        <div class="card">
+            <p>Computación y Robótica es una materia optativa que se imparte en los cursos de 1º, 2º y 3º de la ESO.</p>
+            <p style="margin-top:10px">En Computación y Robótica también se utiliza el método de proyectos, iniciando al alumnado en los lenguajes de programación, construyendo pequeños robots y programando el código para que sigan sus instrucciones.</p>
+            <p style="margin-top:10px">En esta materia se utiliza el pensamiento computacional, que hace referencia a una forma de abordar los problemas y los sistemas, de manera que pueda utilizarse un ordenador para ayudarnos a solucionarlos y/o a comprenderlos.</p>
+            <p style="margin-top:10px">Mediante el pensamiento computacional, se aprende a dividir problemas complejos en otros más pequeños (descomposición), a reconocer patrones (identificación de patrones), a identificar los aspectos relevantes para resolver un problema (abstracción) o a establecer las normas o instrucciones que deben seguirse para alcanzar el efecto deseado (diseño de un algoritmo).</p>
+            <p style="margin-top:10px">El pensamiento computacional ayuda a ser más ordenado y metódico en general, lo que puede ser positivo para todas las materias.</p>
+        </div>
+    </section>
 
-                        ctx.beginPath();
-                        ctx.moveTo(nodes[i].x, nodes[i].y);
-                        ctx.lineTo(nodes[j].x, nodes[j].y);
-                        ctx.strokeStyle = `rgba(56, 182, 255, ${alpha + extraAlpha})`;
-                        ctx.lineWidth = 0.6 + extraAlpha * 2;
-                        ctx.stroke();
-                    }
-                }
+    <div class="section-sep"></div>
 
-                // Líneas al ratón
-                const dxm = nodes[i].x - mouse.x;
-                const dym = nodes[i].y - mouse.y;
-                const distM = Math.sqrt(dxm * dxm + dym * dym);
-                if (distM < MOUSE_DIST) {
-                    const alpha = (1 - distM / MOUSE_DIST) * 0.35;
-                    ctx.beginPath();
-                    ctx.moveTo(nodes[i].x, nodes[i].y);
-                    ctx.lineTo(mouse.x, mouse.y);
-                    ctx.strokeStyle = `rgba(100, 210, 255, ${alpha})`;
-                    ctx.lineWidth = 0.8;
-                    ctx.stroke();
-                }
-            }
-        }
+    <!-- ===== DIGITALIZACIÓN ===== -->
+    <section class="content-section">
+        <h2 class="section-title"><i class="fas fa-laptop"></i> ¿Cómo trabajamos en Digitalización?</h2>
 
-        // Bucle de animación
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
+        <div class="card">
+            <p>Digitalización es una asignatura optativa de 4º ESO. Es un área imprescindible para desenvolverse en la sociedad actual.</p>
+            <p style="margin-top:10px">Todas las clases se realizan con el ordenador y en ellas se tratan temas de hardware y software, creación y organización de documentos digitales, interacción en red o ciberseguridad.</p>
+            <p style="margin-top:10px">En clase se realizan actividades en formato digital y se trabajará mediante situaciones de aprendizaje que propicien el aprendizaje de alumnado.</p>
+        </div>
+    </section>
 
-            drawConnections();
+    <div class="section-sep"></div>
 
-            nodes.forEach(node => {
-                node.update();
-                node.draw();
-            });
+    <!-- ===== NORMAS DE LAS AULAS ===== -->
+    <section class="content-section">
+        <h2 class="section-title"><i class="fas fa-clipboard-list"></i> Normas de las aulas específicas</h2>
 
-            requestAnimationFrame(animate);
-        }
-        animate();
+        <div class="rules-grid">
+            <div class="rule-card">
+                <h3><i class="fas fa-hammer"></i> Normas del aula taller</h3>
+                <p class="intro-text">Dado que el aula taller se trabaja con herramientas, además de las normas de convivencia comunes a todas las aulas, se prohíbe lo siguiente:</p>
+                <ul>
+                    <li>Deteriorar el material del aula taller (Mesas, herramientas, paredes, puertas, etc.) por un uso inadecuado de las herramientas.</li>
+                    <li>Correr en el aula taller</li>
+                    <li>Jugar con las herramientas y hacer ruidos innecesarios</li>
+                    <li>Romper el trabajo construido por un compañero</li>
+                    <li>Utilizar herramientas eléctricas sin el permiso del profesor</li>
+                    <li>Utilizar pinturas sin el permiso del profesor</li>
+                    <li>Comer o beber en el aula taller</li>
+                </ul>
+            </div>
 
-        // ===== MENÚ ACTIVO =====
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function (e) {
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-    </script>
+            <div class="rule-card">
+                <h3><i class="fas fa-desktop"></i> Normas del aula de informática</h3>
+                <p class="intro-text">En el aula de informática, además de las normas de convivencia comunes a todas las aulas, se prohíbe lo siguiente:</p>
+                <ul>
+                    <li>Deteriorar el material del aula de informática por un uso inadecuado del mismo (Ordenadores, teclados, ratones, mesas, cables, etc.)</li>
+                    <li>Conectar o desconectar cables sin el permiso del profesor</li>
+                    <li>Escuchar música sin el permiso del profesor</li>
+                    <li>Instalar o desinstalar programas</li>
+                    <li>Entrar en páginas web no propuestas por el profesor</li>
+                    <li>Comer o beber en el aula de informática</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-sep"></div>
+
+    <!-- ===== PAUTAS DE EVALUACIÓN ===== -->
+    <section class="content-section">
+        <h2 class="section-title"><i class="fas fa-chart-bar"></i> Pautas de evaluación</h2>
+
+        <div class="eval-grid">
+            <div class="eval-card">
+                <h3><i class="fas fa-microchip"></i> Tecnología y Digitalización</h3>
+                <p>Para el desarrollo de las situaciones de aprendizaje de esta materia se utilizará el aula ordinaria y el aula taller de tecnología.</p>
+                <ul>
+                    <li>Se realizarán actividades escritas y orales, actividades digitales, dibujos técnicos, proyectos técnicos, documentación técnica.</li>
+                    <li>Se utilizará principalmente la observación sistemática del trabajo en el aula como método de evaluación de los criterios de evaluación específicos del área.</li>
+                    <li>También se utilizarán otros métodos de evaluación como rúbricas, listas de cotejo, pruebas escritas, actividades con el ordenador, formularios, etc.</li>
+                    <li>La evaluación será continua y se usará el cuaderno de Séneca para recoger las notas de las actividades y para obtener las notas medias de cada evaluación.</li>
+                </ul>
+            </div>
+
+            <div class="eval-card">
+                <h3><i class="fas fa-robot"></i> Computación y Robótica</h3>
+                <p>Para el desarrollo de las situaciones de aprendizaje de esta materia se utilizará el aula de informática y el aula taller de tecnología.</p>
+                <ul>
+                    <li>Se realizarán actividades escritas y orales, actividades digitales, proyectos de robótica.</li>
+                    <li>Se utilizará principalmente la observación sistemática del trabajo en el aula como método de evaluación de los criterios de evaluación específicos del área.</li>
+                    <li>También se utilizarán otros métodos de evaluación como rúbricas, listas de cotejo, pruebas escritas, actividades con el ordenador, formularios, etc.</li>
+                    <li>La evaluación será continua y se usará el cuaderno de Séneca para recoger las notas de las actividades y para obtener las notas medias de cada evaluación.</li>
+                </ul>
+            </div>
+
+            <div class="eval-card">
+                <h3><i class="fas fa-cogs"></i> Tecnología 4º ESO</h3>
+                <p>Para el desarrollo de las situaciones de aprendizaje de esta materia se utilizará el aula de informática y el aula taller de tecnología.</p>
+                <ul>
+                    <li>Se realizarán actividades escritas y orales, actividades digitales, dibujos técnicos, proyectos técnicos, documentación técnica.</li>
+                    <li>Se utilizará principalmente la observación sistemática del trabajo en el aula como método de evaluación de los criterios de evaluación específicos del área.</li>
+                    <li>También se utilizarán otros métodos de evaluación como rúbricas, listas de cotejo, pruebas escritas, actividades con el ordenador, formularios, etc.</li>
+                    <li>La evaluación será continua y se usará el cuaderno de Séneca para recoger las notas de las actividades y para obtener las notas medias de cada evaluación.</li>
+                </ul>
+            </div>
+
+            <div class="eval-card">
+                <h3><i class="fas fa-laptop-code"></i> Digitalización 4º ESO</h3>
+                <p>Para el desarrollo de las situaciones de aprendizaje de esta materia se utilizará el aula de informática.</p>
+                <ul>
+                    <li>Se realizarán actividades escritas mediante el ordenador y ejercicios de aplicación de las herramientas digitales estudiadas.</li>
+                    <li>Se utilizará principalmente la observación sistemática del trabajo en el aula como método de evaluación de los criterios de evaluación específicos del área.</li>
+                    <li>También se utilizarán otros métodos de evaluación como rúbricas, listas de cotejo, pruebas escritas, actividades con el ordenador, formularios, etc.</li>
+                    <li>La evaluación será continua y se usará el cuaderno de Séneca para recoger las notas de las actividades y para obtener las notas medias de cada evaluación.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-sep"></div>
+
+    <!-- ===== PROCEDIMIENTOS DE RECUPERACIÓN ===== -->
+    <section class="content-section">
+        <h2 class="section-title"><i class="fas fa-redo-alt"></i> Procedimientos de recuperación</h2>
+
+        <!-- 2º ESO -->
+        <div class="card">
+            <div class="recovery-block">
+                <h3><i class="fas fa-user-graduate"></i> Alumnado de 2º ESO</h3>
+                <div class="recovery-sub">
+                    <p>Para el alumnado de 2º de ESO con Computación y Robótica pendiente de 1º de ESO:</p>
+                    <ul>
+                        <li>Se creará una clase de classroom con las actividades de recuperación y se añadirá al alumnado con la materia pendiente.</li>
+                        <li>El alumnado tendrá que presentar una serie de actividades trimestrales y obtendrá una nota de su progreso en cada evaluación.</li>
+                        <li>Para la realización de las actividades no hace falta libro, los contenidos se encuentran en esta web.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 3º ESO -->
+            <div class="recovery-block">
+                <h3><i class="fas fa-user-graduate"></i> Alumnado de 3º ESO</h3>
+                <div class="recovery-sub">
+                    <p>Para el alumnado de 3º de ESO con Tecnología y Digitalización pendiente de 2º de ESO:</p>
+                    <ul>
+                        <li>Se creará una clase de classroom con las actividades de recuperación y se añadirá al alumnado con la materia pendiente.</li>
+                        <li>El alumnado tendrá que presentar una serie de actividades trimestrales y obtendrá una nota de su progreso en cada evaluación.</li>
+                        <li>El profesor le facilitará un libro de 2º ESO para la realización de las actividades.</li>
+                    </ul>
+                </div>
+                <div class="recovery-sub">
+                    <p>Para el alumnado 3º de ESO con Computación y Robótica pendiente de 1º de ESO y/o 2º de ESO:</p>
+                    <ul>
+                        <li>Se creará una clase de classroom con las actividades de recuperación y se añadirá al alumnado con la materia pendiente.</li>
+                        <li>El alumnado tendrá que presentar una serie de actividades trimestrales y obtendrá una nota de su progreso en cada evaluación.</li>
+                        <li>Para la realización de las actividades no hace falta libro, los contenidos se encuentran en esta web.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 4º ESO -->
+            <div class="recovery-block">
+                <h3><i class="fas fa-user-graduate"></i> Alumnado de 4º ESO</h3>
+                <div class="recovery-sub">
+                    <p>Para el alumnado de 4º de ESO con Tecnología y Digitalización pendiente de 2º de ESO y/o 3º de ESO:</p>
+                    <ul>
+                        <li>Se creará una clase de classroom con las actividades de recuperación y se añadirá al alumnado con la materia pendiente.</li>
+                        <li>El alumnado tendrá que presentar una serie de actividades trimestrales y obtendrá una nota de su progreso en cada evaluación.</li>
+                        <li>El profesor le facilitará un libro de 2º ESO y/o 3º ESO para la realización de las actividades.</li>
+                    </ul>
+                </div>
+                <div class="recovery-sub">
+                    <p>Para el alumnado 3º de ESO con Computación y Robótica pendiente de 1º de ESO y/o 2º de ESO y/o 3º de ESO:</p>
+                    <ul>
+                        <li>Se creará una clase de classroom con las actividades de recuperación y se añadirá al alumnado con la materia pendiente.</li>
+                        <li>El alumnado tendrá que presentar una serie de actividades trimestrales y obtendrá una nota de su progreso en cada evaluación.</li>
+                        <li>Para la realización de las actividades no hace falta libro, los contenidos se encuentran en esta web.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    <p>© 2025 MIGUELTECNOLOGIA — Todos los derechos reservados</p>
+</footer>
+
+<script>
+    const canvas=document.getElementById('networkCanvas'),ctx=canvas.getContext('2d');
+    let width,height,nodes=[],mouse={x:-9999,y:-9999};
+    const NODE_COUNT=80,CONNECTION_DIST=180,MOUSE_DIST=220;
+    function resize(){width=canvas.width=window.innerWidth;height=canvas.height=window.innerHeight}
+    window.addEventListener('resize',resize);resize();
+    window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY});
+    window.addEventListener('mouseleave',()=>{mouse.x=-9999;mouse.y=-9999});
+    class Node{constructor(){this.x=Math.random()*width;this.y=Math.random()*height;this.vx=(Math.random()-.5)*.4;this.vy=(Math.random()-.5)*.4;this.radius=Math.random()*2.5+1;this.baseAlpha=Math.random()*.5+.3;this.alpha=this.baseAlpha;const h=200+Math.random()*20,s=80+Math.random()*20,l=60+Math.random()*20;this.glowColor=`hsla(${h},${s}%,${l}%,`}
+    update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>width)this.vx*=-1;if(this.y<0||this.y>height)this.vy*=-1;this.x=Math.max(0,Math.min(width,this.x));this.y=Math.max(0,Math.min(height,this.y));const dx=this.x-mouse.x,dy=this.y-mouse.y,d=Math.sqrt(dx*dx+dy*dy);this.alpha=d<MOUSE_DIST?this.baseAlpha+(1-d/MOUSE_DIST)*.6:this.alpha+(this.baseAlpha-this.alpha)*.05}
+    draw(){const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.radius*6);g.addColorStop(0,this.glowColor+(this.alpha*.4)+')');g.addColorStop(.4,this.glowColor+(this.alpha*.1)+')');g.addColorStop(1,this.glowColor+'0)');ctx.beginPath();ctx.arc(this.x,this.y,this.radius*6,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();ctx.beginPath();ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);ctx.fillStyle=this.glowColor+this.alpha+')';ctx.fill()}}
+    function initNodes(){nodes=[];for(let i=0;i<NODE_COUNT;i++)nodes.push(new Node)}initNodes();
+    window.addEventListener('resize',()=>{nodes.forEach(n=>{if(n.x>width)n.x=Math.random()*width;if(n.y>height)n.y=Math.random()*height})});
+    function drawConnections(){for(let i=0;i<nodes.length;i++){for(let j=i+1;j<nodes.length;j++){const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<CONNECTION_DIST){let a=(1-d/CONNECTION_DIST)*.25,ea=0;const mi=Math.sqrt((nodes[i].x-mouse.x)**2+(nodes[i].y-mouse.y)**2),mj=Math.sqrt((nodes[j].x-mouse.x)**2+(nodes[j].y-mouse.y)**2);if(mi<MOUSE_DIST||mj<MOUSE_DIST)ea=.2;ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);ctx.strokeStyle=`rgba(56,182,255,${a+ea})`;ctx.lineWidth=.6+ea*2;ctx.stroke()}}const dm=Math.sqrt((nodes[i].x-mouse.x)**2+(nodes[i].y-mouse.y)**2);if(dm<MOUSE_DIST){const a=(1-dm/MOUSE_DIST)*.35;ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(mouse.x,mouse.y);ctx.strokeStyle=`rgba(100,210,255,${a})`;ctx.lineWidth=.8;ctx.stroke()}}}
+    function animate(){ctx.clearRect(0,0,width,height);drawConnections();nodes.forEach(n=>{n.update();n.draw()});requestAnimationFrame(animate)}animate();
+    document.querySelectorAll('.nav-link').forEach(l=>{l.addEventListener('click',function(){document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('active'));this.classList.add('active')})});
+</script>
 </body>
 </html>
