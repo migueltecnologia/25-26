@@ -32,6 +32,7 @@
             --conn-r:56;--conn-g:182;--conn-b:255;--conn-br-r:100;--conn-br-g:210;--conn-br-b:255;
             --icon-color:#38b6ff;--icon-hover:#00d4ff;--icon-glow:rgba(56,182,255,.5);
             --sticky-nav-bg:rgba(8,18,40,.88);--sticky-nav-border:rgba(56,182,255,.1);
+            --logo-ring:rgba(56,182,255,.15);--logo-glow:rgba(56,182,255,.25);
         }
         [data-theme="light"] {
             --bg-grad-1:#e4eef8;--bg-grad-2:#d0e2f4;--bg-grad-3:#bcd6f0;--bg-grad-4:#c5daf2;--bg-grad-5:#dde9f8;
@@ -57,10 +58,11 @@
             --conn-r:70;--conn-g:145;--conn-b:215;--conn-br-r:55;--conn-br-g:125;--conn-br-b:195;
             --icon-color:#2070b0;--icon-hover:#185a90;--icon-glow:rgba(32,112,176,.3);
             --sticky-nav-bg:rgba(220,235,250,.92);--sticky-nav-border:rgba(50,130,210,.12);
+            --logo-ring:rgba(50,130,210,.12);--logo-glow:rgba(50,130,210,.1);
         }
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh;color:var(--text-primary);transition:color .4s ease}
-        body,.card,.adv-card,.dis-card,.rule-card,.eval-card,.nav-link,.theme-toggle,.definition-box,.highlight-box,.env-note,.recovery-sub,.nav-sticky{transition:background-color .4s ease,color .4s ease,border-color .4s ease,box-shadow .4s ease}
+        body,.card,.adv-card,.dis-card,.rule-card,.eval-card,.nav-link,.theme-toggle,.definition-box,.highlight-box,.env-note,.recovery-sub,.nav-sticky,.logo-container{transition:background-color .4s ease,color .4s ease,border-color .4s ease,box-shadow .4s ease}
 
         .bg-tech{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;background:linear-gradient(135deg,var(--bg-grad-1) 0%,var(--bg-grad-2) 25%,var(--bg-grad-3) 50%,var(--bg-grad-4) 75%,var(--bg-grad-5) 100%);transition:background .5s ease}
         #networkCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1}
@@ -76,14 +78,51 @@
         [data-theme="light"] .theme-toggle .icon-moon{opacity:1;transform:rotate(0) scale(1)}
 
         /* HEADER */
-        .site-header{position:relative;width:100%;padding:50px 20px 20px;text-align:center;z-index:10}
-        .title-wrapper{display:inline-flex;align-items:center;gap:clamp(12px,2.5vw,24px)}
-        .logo-img{height:clamp(52px,8vw,88px);width:auto;filter:drop-shadow(0 0 12px rgba(56,182,255,.3));transition:filter .4s ease}
-        [data-theme="light"] .logo-img{filter:drop-shadow(0 0 8px rgba(50,130,210,.15))}
-        .site-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.6rem,5vw,3.8rem);font-weight:900;color:var(--text-heading);letter-spacing:.08em;text-shadow:0 0 20px var(--title-shadow-1),0 0 40px var(--title-shadow-2),0 0 80px var(--title-shadow-3);position:relative;transition:color .4s ease,text-shadow .4s ease}
+        .site-header{position:relative;width:100%;padding:50px 20px 24px;text-align:center;z-index:10}
+        .title-wrapper{display:inline-flex;align-items:center;gap:clamp(14px,2.5vw,28px)}
+
+        /* LOGO PULIDO */
+        .logo-container{
+            position:relative;
+            display:flex;align-items:center;justify-content:center;
+            flex-shrink:0;
+        }
+        .logo-ring-outer{
+            position:absolute;
+            width:calc(100% + 18px);height:calc(100% + 18px);
+            border-radius:50%;
+            border:1.5px dashed var(--logo-ring);
+            animation:logoSpin 30s linear infinite;
+            transition:border-color .4s ease;
+        }
+        .logo-ring-inner{
+            position:absolute;
+            width:calc(100% + 8px);height:calc(100% + 8px);
+            border-radius:50%;
+            border:1px solid var(--logo-ring);
+            transition:border-color .4s ease;
+        }
+        .logo-glow{
+            position:absolute;
+            width:120%;height:120%;
+            border-radius:50%;
+            background:radial-gradient(circle,var(--logo-glow) 0%,transparent 70%);
+            filter:blur(8px);
+            transition:background .4s ease;
+        }
+        @keyframes logoSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+        .logo-img{
+            height:clamp(56px,8vw,92px);width:auto;
+            position:relative;z-index:2;
+            filter:drop-shadow(0 2px 8px rgba(0,0,0,.3));
+            transition:filter .4s ease,transform .4s ease;
+        }
+        .logo-container:hover .logo-img{transform:scale(1.05)}
+
+        .site-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.5rem,4.8vw,3.6rem);font-weight:900;color:var(--text-heading);letter-spacing:.08em;text-shadow:0 0 20px var(--title-shadow-1),0 0 40px var(--title-shadow-2),0 0 80px var(--title-shadow-3);position:relative;transition:color .4s ease,text-shadow .4s ease}
         .site-title::after{content:'';position:absolute;bottom:-10px;left:0;width:100%;height:3px;background:linear-gradient(90deg,transparent,var(--def-border),var(--link-hover),var(--def-border),transparent);border-radius:2px;box-shadow:0 0 12px var(--title-line-glow);transition:background .4s ease,box-shadow .4s ease}
-        .site-subtitle{font-size:clamp(.6rem,1.5vw,.82rem);font-weight:300;color:var(--subtitle-color);letter-spacing:.15em;text-transform:uppercase;margin-top:22px;transition:color .4s ease}
-        .subtitle-sep{color:var(--subtitle-color);opacity:.5;margin:0 6px;transition:color .4s ease}
+        .site-subtitle{font-size:clamp(.55rem,1.4vw,.78rem);font-weight:300;color:var(--subtitle-color);letter-spacing:.12em;text-transform:uppercase;margin-top:24px;transition:color .4s ease}
+        .subtitle-sep{color:var(--subtitle-color);opacity:.4;margin:0 5px;transition:color .4s ease}
 
         /* NAV STICKY */
         .nav-sticky{position:sticky;top:0;z-index:100;background:var(--sticky-nav-bg);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--sticky-nav-border);box-shadow:0 4px 24px rgba(0,0,0,.15);transition:background .4s ease,border-color .4s ease,box-shadow .4s ease}
@@ -111,6 +150,12 @@
         .card ul{list-style:none;padding:0;margin:0}
         .card ul li{padding:6px 0 6px 24px;position:relative}
         .card ul li::before{content:'';position:absolute;left:0;top:15px;width:8px;height:8px;border-radius:50%;background:var(--bullet-bg);box-shadow:0 0 6px var(--bullet-glow);transition:background .4s ease,box-shadow .4s ease}
+
+        /* CARD CON IMAGEN */
+        .card-with-image{display:flex;gap:32px;align-items:center}
+        .card-with-image .card-text{flex:1;min-width:0}
+        .card-with-image .card-image{flex-shrink:0;width:clamp(140px,22vw,220px);text-align:center}
+        .card-with-image .card-image img{width:100%;height:auto;border-radius:12px}
 
         .definition-box{background:var(--def-bg);border-left:3px solid var(--def-border);border-radius:0 10px 10px 0;padding:20px 24px;margin:20px 0}
         .definition-box p{font-style:italic;color:var(--def-text)}
@@ -184,8 +229,10 @@
             .card{padding:24px 18px}
             .recovery-sub{margin-left:10px;padding-left:14px}
             .theme-toggle{top:10px;right:10px;width:40px;height:40px;font-size:1rem}
-            .site-subtitle{font-size:.55rem;letter-spacing:.08em}
-            .subtitle-sep{margin:0 3px}
+            .site-subtitle{font-size:.5rem;letter-spacing:.06em}
+            .subtitle-sep{margin:0 2px}
+            .card-with-image{flex-direction:column-reverse;gap:16px;text-align:center}
+            .card-with-image .card-image{width:clamp(100px,40vw,160px)}
         }
     </style>
 </head>
@@ -201,7 +248,12 @@
 
 <header class="site-header">
     <div class="title-wrapper">
-        <img src="https://z-cdn-media.chatglm.cn/files/0ae98e09-381d-46f6-b56a-7eca1a3fd9b3.png?auth_key=1875930103-e262287639bb4e4c8ec16ac2f2b18e51-0-f9aba757df1298442cf98f8e71a19d51" alt="Logo MIGUELTECNOLOGIA" class="logo-img">
+        <div class="logo-container">
+            <div class="logo-glow"></div>
+            <div class="logo-ring-outer"></div>
+            <div class="logo-ring-inner"></div>
+            <img src="https://z-cdn-media.chatglm.cn/files/0ae98e09-381d-46f6-b56a-7eca1a3fd9b3.png?auth_key=1875930103-e262287639bb4e4c8ec16ac2f2b18e51-0-f9aba757df1298442cf98f8e71a19d51" alt="Logo MIGUELTECNOLOGIA" class="logo-img">
+        </div>
         <h1 class="site-title">MIGUELTECNOLOGIA</h1>
     </div>
     <p class="site-subtitle">TECNOLOGÍA <span class="subtitle-sep">·</span> DIGITALIZACIÓN <span class="subtitle-sep">·</span> COMPUTACIÓN <span class="subtitle-sep">·</span> ROBÓTICA</p>
@@ -221,11 +273,18 @@
 
     <section class="content-section">
         <h2 class="section-title"><i class="fas fa-question-circle"></i> ¿Qué es la tecnología?</h2>
-        <div class="card">
-            <p>Esta es la pregunta con la que solemos comenzar el curso, en todos los niveles de la ESO y las respuestas son siempre las mismas:</p>
-            <ul style="margin-top:14px"><li>Es una asignatura.</li><li>Es la ciencia que se encarga de los inventos.</li><li>Es construir con herramientas.</li></ul>
-            <p style="margin-top:16px">Como parece que la cosa no está muy clara, intentaremos responder a esta pregunta, ya que si no sabemos lo que es la tecnología, ¿Cómo vamos a estudiarla?.</p>
+
+        <div class="card card-with-image">
+            <div class="card-text">
+                <p>Esta es la pregunta con la que solemos comenzar el curso, en todos los niveles de la ESO y las respuestas son siempre las mismas:</p>
+                <ul style="margin-top:14px"><li>Es una asignatura.</li><li>Es la ciencia que se encarga de los inventos.</li><li>Es construir con herramientas.</li></ul>
+                <p style="margin-top:16px">Como parece que la cosa no está muy clara, intentaremos responder a esta pregunta, ya que si no sabemos lo que es la tecnología, ¿Cómo vamos a estudiarla?.</p>
+            </div>
+            <div class="card-image">
+                <img src="https://z-cdn-media.chatglm.cn/files/3bb34713-c2be-4199-be7e-fff3ff36b7a2.png?auth_key=1875930849-b89a95881b9842c0a2725164dc3c8524-0-9f0a8817b4a78df4c1e4c0e27948a1a3" alt="Persona pensando con signo de interrogación">
+            </div>
         </div>
+
         <div class="card">
             <p>Según el diccionario de la Real Academia Española, la tecnología es:</p>
             <div class="definition-box">
@@ -466,14 +525,12 @@
 </footer>
 
 <script>
-    // ===== TEMA =====
     const html=document.documentElement,toggle=document.getElementById('themeToggle');
     const saved=localStorage.getItem('migueltcc-theme');
     if(saved)html.setAttribute('data-theme',saved);
     else if(window.matchMedia('(prefers-color-scheme:light)').matches)html.setAttribute('data-theme','light');
     toggle.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('migueltcc-theme',n);updateCanvasTheme()});
 
-    // ===== CANVAS =====
     const canvas=document.getElementById('networkCanvas'),ctx=canvas.getContext('2d');
     let width,height,nodes=[],mouse={x:-9999,y:-9999};
     const NC=80,CD=180,MD=220;
@@ -493,7 +550,6 @@
     function drawConns(){for(let i=0;i<nodes.length;i++){for(let j=i+1;j<nodes.length;j++){const d=Math.hypot(nodes[i].x-nodes[j].x,nodes[i].y-nodes[j].y);if(d<CD){let a=(1-d/CD)*.25,ea=0;if(Math.hypot(nodes[i].x-mouse.x,nodes[i].y-mouse.y)<MD||Math.hypot(nodes[j].x-mouse.x,nodes[j].y-mouse.y)<MD)ea=.2;ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);ctx.strokeStyle=`rgba(${cR},${cG},${cB},${a+ea})`;ctx.lineWidth=.6+ea*2;ctx.stroke()}}const dm=Math.hypot(nodes[i].x-mouse.x,nodes[i].y-mouse.y);if(dm<MD){const a=(1-dm/MD)*.35;ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(mouse.x,mouse.y);ctx.strokeStyle=`rgba(${cbR},${cbG},${cbB},${a})`;ctx.lineWidth=.8;ctx.stroke()}}}
     (function animate(){ctx.clearRect(0,0,width,height);drawConns();nodes.forEach(n=>{n.update();n.draw()});requestAnimationFrame(animate)})();
 
-    // ===== MENÚ ACTIVO =====
     document.querySelectorAll('.nav-link').forEach(l=>{l.addEventListener('click',function(){document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('active'));this.classList.add('active')})});
 </script>
 </body>
