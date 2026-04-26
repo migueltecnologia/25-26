@@ -24,6 +24,7 @@
             --bullet-bg:rgba(56,182,255,.5);--bullet-glow:rgba(56,182,255,.3);
             --rule-bullet-bg:rgba(255,100,100,.45);--rule-bullet-glow:rgba(255,100,100,.25);
             --footer-text:rgba(140,180,220,.4);--footer-border:rgba(56,182,255,.08);
+            --footer-link:rgba(140,180,220,.6);
             --toggle-bg:rgba(10,22,50,.5);--toggle-border:rgba(56,182,255,.3);--toggle-color:#38b6ff;--toggle-hover-shadow:rgba(56,182,255,.3);
             --question-color:rgba(255,200,140,.9);
             --title-shadow-1:rgba(56,182,255,.6);--title-shadow-2:rgba(56,182,255,.3);--title-shadow-3:rgba(56,182,255,.15);
@@ -32,6 +33,7 @@
             --conn-r:56;--conn-g:182;--conn-b:255;--conn-br-r:100;--conn-br-g:210;--conn-br-b:255;
             --icon-color:#38b6ff;--icon-hover:#00d4ff;--icon-glow:rgba(56,182,255,.5);
             --sticky-nav-bg:rgba(8,18,40,.88);--sticky-nav-border:rgba(56,182,255,.1);
+            --def-icon-color:#38b6ff;--warn-icon-color:#ffa726;
         }
         [data-theme="light"] {
             --bg-grad-1:#e4eef8;--bg-grad-2:#d0e2f4;--bg-grad-3:#bcd6f0;--bg-grad-4:#c5daf2;--bg-grad-5:#dde9f8;
@@ -49,6 +51,7 @@
             --bullet-bg:rgba(50,130,210,.45);--bullet-glow:rgba(50,130,210,.15);
             --rule-bullet-bg:rgba(192,48,48,.4);--rule-bullet-glow:rgba(192,48,48,.12);
             --footer-text:rgba(80,120,160,.5);--footer-border:rgba(50,130,210,.1);
+            --footer-link:rgba(60,100,150,.65);
             --toggle-bg:rgba(255,255,255,.65);--toggle-border:rgba(50,130,210,.3);--toggle-color:#2070b0;--toggle-hover-shadow:rgba(50,130,210,.25);
             --question-color:rgba(130,70,10,.9);
             --title-shadow-1:transparent;--title-shadow-2:transparent;--title-shadow-3:transparent;
@@ -57,6 +60,7 @@
             --conn-r:70;--conn-g:145;--conn-b:215;--conn-br-r:55;--conn-br-g:125;--conn-br-b:195;
             --icon-color:#2070b0;--icon-hover:#185a90;--icon-glow:rgba(32,112,176,.3);
             --sticky-nav-bg:rgba(220,235,250,.92);--sticky-nav-border:rgba(50,130,210,.12);
+            --def-icon-color:#2070b0;--warn-icon-color:#e68900;
         }
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh;color:var(--text-primary);transition:color .4s ease}
@@ -95,6 +99,12 @@
         .nav-link.active{color:var(--text-heading);background:var(--nav-active-bg);border-color:var(--nav-hover-border);text-shadow:0 0 12px var(--toggle-hover-shadow)}
         .nav-link .caret{margin-left:6px;font-size:.65em;transition:transform .3s ease}
 
+        /* INICIO CIAN - sin bordes redondeados */
+        .nav-link--cyan{color:rgba(100,220,220,.9);border-color:rgba(0,200,200,.2);border-radius:0 !important}
+        .nav-link--cyan:hover{color:#fff;background:rgba(0,200,200,.18);border-color:rgba(0,200,200,.55);text-shadow:0 0 14px rgba(0,200,200,.6);box-shadow:0 0 20px rgba(0,200,200,.15),inset 0 0 20px rgba(0,200,200,.05)}
+        .nav-link--cyan::before{background:linear-gradient(90deg,transparent,#00c8c8,transparent)}
+        .nav-link--cyan.active{color:#fff;background:rgba(0,200,200,.22);border-color:rgba(0,200,200,.55);text-shadow:0 0 14px rgba(0,200,200,.6)}
+
         /* 1º ESO NARANJA */
         .nav-link--orange{color:rgba(255,180,100,.9);border-color:rgba(255,140,40,.2)}
         .nav-link--orange:hover{color:#fff;background:rgba(255,140,40,.18);border-color:rgba(255,140,40,.55);text-shadow:0 0 14px rgba(255,140,40,.6);box-shadow:0 0 20px rgba(255,140,40,.15),inset 0 0 20px rgba(255,140,40,.05)}
@@ -123,28 +133,24 @@
         .dropdown-menu{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%) translateY(8px);min-width:320px;background:var(--sticky-nav-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(56,182,255,.2);border-radius:10px;padding:6px;box-shadow:0 12px 40px rgba(0,0,0,.3);opacity:0;visibility:hidden;transition:all .3s cubic-bezier(.16,1,.3,1);z-index:150}
         .nav-dropdown:hover .dropdown-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
 
-        /* Dropdown naranja */
         .dropdown-menu--orange{border-color:rgba(255,140,40,.25);box-shadow:0 12px 40px rgba(0,0,0,.3),0 0 20px rgba(255,140,40,.08)}
         .dropdown-item--orange{color:rgba(255,190,120,.85)}
         .dropdown-item--orange i{color:#ff8c28}
         .dropdown-item--orange:hover{background:rgba(255,140,40,.15);color:#fff;text-shadow:0 0 8px rgba(255,140,40,.4)}
         .dropdown-item--orange:hover i{color:#ffaa44}
 
-        /* Dropdown verde */
         .dropdown-menu--green{border-color:rgba(0,200,100,.25);box-shadow:0 12px 40px rgba(0,0,0,.3),0 0 20px rgba(0,200,100,.08)}
         .dropdown-item--green{color:rgba(120,230,170,.85)}
         .dropdown-item--green i{color:#00c864}
         .dropdown-item--green:hover{background:rgba(0,200,100,.15);color:#fff;text-shadow:0 0 8px rgba(0,200,100,.4)}
         .dropdown-item--green:hover i{color:#00e676}
 
-        /* Dropdown rojo */
         .dropdown-menu--red{border-color:rgba(255,80,80,.25);box-shadow:0 12px 40px rgba(0,0,0,.3),0 0 20px rgba(255,80,80,.08)}
         .dropdown-item--red{color:rgba(255,170,170,.85)}
         .dropdown-item--red i{color:#ff5050}
         .dropdown-item--red:hover{background:rgba(255,80,80,.15);color:#fff;text-shadow:0 0 8px rgba(255,80,80,.4)}
         .dropdown-item--red:hover i{color:#ff7777}
 
-        /* Dropdown azul */
         .dropdown-menu--blue{border-color:rgba(56,182,255,.25);box-shadow:0 12px 40px rgba(0,0,0,.3),0 0 20px rgba(56,182,255,.08)}
         .dropdown-item--blue{color:rgba(130,200,255,.85)}
         .dropdown-item--blue i{color:#38b6ff}
@@ -161,7 +167,7 @@
         .card{background:var(--card-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--card-border);border-radius:14px;padding:36px 32px;margin-bottom:20px;box-shadow:0 8px 32px var(--card-shadow),inset 0 1px 0 var(--card-inset)}
         .card h3{font-family:'Orbitron',sans-serif;font-size:clamp(.85rem,2vw,1.1rem);font-weight:700;color:var(--text-heading);margin-bottom:16px;display:flex;align-items:center;gap:10px;transition:color .4s ease}
         .card h3 i{color:var(--icon-color);font-size:.9em;transition:color .4s ease}
-        .card p,.card li{font-size:.95rem;font-weight:300;line-height:1.85;color:var(--body-text)}
+        .card p,.card li{font-size:.95rem;font-weight:300;line-height:1.85;color:var(--body-text);text-align:justify}
         .card ul{list-style:none;padding:0;margin:0}
         .card ul li{padding:6px 0 6px 24px;position:relative}
         .card ul li::before{content:'';position:absolute;left:0;top:15px;width:8px;height:8px;border-radius:50%;background:var(--bullet-bg);box-shadow:0 0 6px var(--bullet-glow);transition:background .4s ease,box-shadow .4s ease}
@@ -173,12 +179,13 @@
         [data-theme="light"] .card-with-image .card-image img{filter:drop-shadow(0 2px 8px rgba(0,0,0,.12))}
 
         .definition-box{background:var(--def-bg);border-left:3px solid var(--def-border);border-radius:0 10px 10px 0;padding:20px 24px;margin:20px 0}
-        .definition-box p{font-style:italic;color:var(--def-text)}
+        .definition-box p,.definition-box ul li{font-style:italic;color:var(--def-text);text-align:justify}
         .definition-box ul{margin-top:12px}
         .definition-box ul li{font-style:italic}
 
         .highlight-box{background:var(--hl-bg);border:1px solid var(--hl-border);border-radius:12px;padding:24px 28px;margin:20px 0;text-align:center}
-        .highlight-box p{font-size:1rem;font-weight:400;color:var(--hl-text);line-height:1.9}
+        .highlight-box p{font-size:1rem;font-weight:400;color:var(--hl-text);line-height:1.9;text-align:center;display:flex;align-items:flex-start;gap:12px}
+        .highlight-box p .hl-icon{flex-shrink:0;color:var(--def-icon-color);font-size:1.3em;margin-top:2px;transition:color .4s ease}
 
         .links-list{list-style:none;padding:0;margin:16px 0 0}
         .links-list li{padding:8px 0}
@@ -220,34 +227,37 @@
         .adv-card h3 i,.dis-card h3 i{font-size:.85em}
         .adv-card ul li::before{background:var(--adv-color);opacity:.5;box-shadow:0 0 6px var(--adv-color)}
         .dis-card ul li::before{background:var(--dis-color);opacity:.5;box-shadow:0 0 6px var(--dis-color)}
-        .adv-card p,.dis-card p,.adv-card li,.dis-card li{color:var(--body-text)}
+        .adv-card p,.dis-card p,.adv-card li,.dis-card li{color:var(--body-text);text-align:justify}
         .adv-card strong{color:var(--adv-color)}.dis-card strong{color:var(--dis-color)}
         .env-note{grid-column:1/-1;background:var(--env-bg);border:1px solid var(--env-border);border-radius:12px;padding:20px 24px;margin-top:4px}
-        .env-note p{font-size:.93rem;color:var(--env-text);line-height:1.85}
+        .env-note p{font-size:.93rem;color:var(--env-text);line-height:1.85;text-align:justify;display:flex;align-items:flex-start;gap:12px}
+        .env-note p .warn-icon{flex-shrink:0;color:var(--warn-icon-color);font-size:1.2em;margin-top:2px;transition:color .4s ease}
 
         .rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
         .rule-card{background:var(--card-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--card-border);border-radius:14px;padding:28px 24px;box-shadow:0 6px 24px var(--card-shadow)}
         .rule-card h3{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:700;color:var(--text-heading);margin-bottom:14px;display:flex;align-items:center;gap:8px}
         .rule-card h3 i{color:var(--icon-color);font-size:.85em}
-        .rule-card .intro-text{font-size:.9rem;font-weight:300;color:var(--body-text);line-height:1.75;margin-bottom:14px}
-        .rule-card ul li::before{background:var(--rule-bullet-bg);box-shadow:0 0 6px var(--rule-bullet-glow);width:7px;height:7px;top:14px}
+        .rule-card .intro-text{font-size:.9rem;font-weight:300;color:var(--body-text);line-height:1.75;margin-bottom:14px;text-align:justify}
+        .rule-card ul{list-style:none;padding:0;margin:0}
+        .rule-card ul li{font-size:.95rem;font-weight:300;line-height:1.85;color:var(--body-text);padding:6px 0 6px 24px;position:relative;text-align:justify}
+        .rule-card ul li::before{content:'';position:absolute;left:0;top:15px;width:7px;height:7px;border-radius:50%;background:var(--rule-bullet-bg);box-shadow:0 0 6px var(--rule-bullet-glow)}
 
         .eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
         .eval-card{background:var(--card-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--card-border);border-radius:14px;padding:28px 24px;box-shadow:0 6px 24px var(--card-shadow)}
         .eval-card h3{font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:700;color:var(--text-heading);margin-bottom:14px;display:flex;align-items:center;gap:8px}
         .eval-card h3 i{color:var(--icon-color);font-size:.85em}
-        .eval-card p{font-size:.9rem;line-height:1.8;color:var(--body-text)}
-        .eval-card ul{margin-top:12px}
-        .eval-card ul li{font-size:.88rem;padding:4px 0 4px 22px}
-        .eval-card ul li::before{width:7px;height:7px;top:13px}
+        .eval-card p{font-size:.9rem;line-height:1.8;color:var(--body-text);text-align:justify}
+        .eval-card ul{margin-top:12px;list-style:none;padding:0}
+        .eval-card ul li{font-size:.88rem;padding:4px 0 4px 22px;position:relative;text-align:justify}
+        .eval-card ul li::before{content:'';position:absolute;left:0;top:13px;width:7px;height:7px;border-radius:50%;background:var(--bullet-bg);box-shadow:0 0 6px var(--bullet-glow)}
 
         .recovery-block{margin-bottom:20px}
         .recovery-block h3{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:700;color:var(--text-heading);margin-bottom:14px;display:flex;align-items:center;gap:8px}
         .recovery-block h3 i{color:var(--icon-color);font-size:.85em}
-        .recovery-block p{font-size:.92rem;line-height:1.8;margin-bottom:10px;color:var(--body-text)}
-        .recovery-block ul{margin-bottom:16px}
-        .recovery-block ul li{font-size:.88rem;padding:4px 0 4px 22px}
-        .recovery-block ul li::before{width:7px;height:7px;top:13px}
+        .recovery-block p{font-size:.92rem;line-height:1.8;margin-bottom:10px;color:var(--body-text);text-align:justify}
+        .recovery-block ul{margin-bottom:16px;list-style:none;padding:0}
+        .recovery-block ul li{font-size:.88rem;padding:4px 0 4px 22px;position:relative;text-align:justify}
+        .recovery-block ul li::before{content:'';position:absolute;left:0;top:13px;width:7px;height:7px;border-radius:50%;background:var(--bullet-bg);box-shadow:0 0 6px var(--bullet-glow)}
         .recovery-sub{margin-left:20px;padding-left:20px;border-left:2px solid var(--section-border);margin-bottom:18px}
         .recovery-sub h4{font-family:'Orbitron',sans-serif;font-size:.78rem;font-weight:600;color:var(--text-primary);margin-bottom:10px}
         .recovery-sub p{font-size:.88rem;margin-bottom:8px}
@@ -256,7 +266,11 @@
         .section-sep{height:1px;background:linear-gradient(90deg,transparent,var(--sep-color),transparent);margin:8px 0 48px}
 
         .site-footer{position:relative;z-index:10;text-align:center;padding:30px 20px 40px;border-top:1px solid var(--footer-border)}
-        .site-footer p{font-size:.8rem;font-weight:300;color:var(--footer-text);letter-spacing:.05em}
+        .footer-cc{display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center}
+        .footer-cc a{color:var(--footer-link);text-decoration:none;font-size:.78rem;font-weight:300;letter-spacing:.03em;transition:color .3s ease;line-height:1.5}
+        .footer-cc a:hover{color:var(--link-color)}
+        .footer-cc img{height:28px;width:auto;opacity:.7;transition:opacity .3s ease}
+        .footer-cc img:hover{opacity:1}
 
         @media(max-width:768px){
             .adv-dis-grid,.rules-grid,.eval-grid,.videos-grid{grid-template-columns:1fr}
@@ -264,6 +278,7 @@
             .nav-bar>:first-child{border-radius:8px 8px 0 0 !important}
             .nav-bar>:last-child{border-radius:0 0 8px 8px !important}
             .nav-bar>:not(:first-child){border-left:1px solid var(--nav-border);border-top:none}
+            .nav-bar > .nav-link--cyan{border-radius:0 !important}
             .dropdown-menu{position:static;transform:none;min-width:100%;border-radius:0;border:1px solid var(--nav-border);border-top:none;box-shadow:none;padding:0}
             .nav-dropdown:hover .dropdown-menu{transform:none}
             .dropdown-item{padding:13px 16px 13px 40px}
@@ -278,6 +293,7 @@
             .subtitle-sep{margin:0 2px}
             .card-with-image{flex-direction:column-reverse;gap:16px;text-align:center}
             .card-with-image .card-image{width:clamp(100px,40vw,160px)}
+            .footer-cc{flex-direction:column;gap:10px}
         }
     </style>
     <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0">
@@ -310,40 +326,36 @@
 
 <nav class="nav-sticky">
     <div class="nav-bar">
-        <a href="#inicio" class="nav-link active"><i class="fas fa-home" style="margin-right:6px;font-size:.85em"></i>INICIO</a>
+        <a href="#inicio" class="nav-link nav-link--cyan active"><i class="fas fa-home" style="margin-right:6px;font-size:.85em"></i>INICIO</a>
 
-        <!-- 1º ESO NARANJA -->
         <div class="nav-dropdown">
             <span class="nav-link nav-link--orange">1º ESO <i class="fas fa-caret-down caret"></i></span>
             <div class="dropdown-menu dropdown-menu--orange">
-                <a href="#1eso-cyrobot" class="dropdown-item dropdown-item--orange"><i class="fas fa-robot"></i> Computación y Robótica - 1º ESO</a>
+                <a href="computacion-y-robotica-1eso.html" class="dropdown-item dropdown-item--orange"><i class="fas fa-robot"></i> Computación y Robótica - 1º ESO</a>
             </div>
         </div>
 
-        <!-- 2º ESO VERDE -->
         <div class="nav-dropdown">
             <span class="nav-link nav-link--green">2º ESO <i class="fas fa-caret-down caret"></i></span>
             <div class="dropdown-menu dropdown-menu--green">
-                <a href="#2eso-tyd" class="dropdown-item dropdown-item--green"><i class="fas fa-microchip"></i> Tecnología y Digitalización - 2º ESO</a>
-                <a href="#2eso-cyrobot" class="dropdown-item dropdown-item--green"><i class="fas fa-robot"></i> Computación y Robótica - 2º ESO</a>
+                <a href="tecnologia-y-digitalizacion-2eso.html" class="dropdown-item dropdown-item--green"><i class="fas fa-microchip"></i> Tecnología y Digitalización - 2º ESO</a>
+                <a href="computacion-y-robotica-2eso.html" class="dropdown-item dropdown-item--green"><i class="fas fa-robot"></i> Computación y Robótica - 2º ESO</a>
             </div>
         </div>
 
-        <!-- 3º ESO ROJO -->
         <div class="nav-dropdown">
             <span class="nav-link nav-link--red">3º ESO <i class="fas fa-caret-down caret"></i></span>
             <div class="dropdown-menu dropdown-menu--red">
-                <a href="#3eso-tyd" class="dropdown-item dropdown-item--red"><i class="fas fa-microchip"></i> Tecnología y Digitalización - 3º ESO</a>
-                <a href="#3eso-cyrobot" class="dropdown-item dropdown-item--red"><i class="fas fa-robot"></i> Computación y Robótica - 3º ESO</a>
+                <a href="tecnologia-y-digitalizacion-3eso.html" class="dropdown-item dropdown-item--red"><i class="fas fa-microchip"></i> Tecnología y Digitalización - 3º ESO</a>
+                <a href="computacion-y-robotica-3eso.html" class="dropdown-item dropdown-item--red"><i class="fas fa-robot"></i> Computación y Robótica - 3º ESO</a>
             </div>
         </div>
 
-        <!-- 4º ESO AZUL VIVO -->
         <div class="nav-dropdown">
             <span class="nav-link nav-link--bright-blue">4º ESO <i class="fas fa-caret-down caret"></i></span>
             <div class="dropdown-menu dropdown-menu--blue">
-                <a href="#4eso-tecno" class="dropdown-item dropdown-item--blue"><i class="fas fa-microchip"></i> Tecnología - 4º ESO</a>
-                <a href="#4eso-digital" class="dropdown-item dropdown-item--blue"><i class="fas fa-laptop-code"></i> Digitalización - 4º ESO</a>
+                <a href="tecnologia-4eso.html" class="dropdown-item dropdown-item--blue"><i class="fas fa-microchip"></i> Tecnología - 4º ESO</a>
+                <a href="digitalizacion-4eso.html" class="dropdown-item dropdown-item--blue"><i class="fas fa-laptop-code"></i> Digitalización - 4º ESO</a>
             </div>
         </div>
     </div>
@@ -398,7 +410,7 @@
             <p style="margin-top:10px">Estos hombres primitivos tenían un problema técnico, tenían herramientas, materiales y conocimientos para utilizarlos, y los usaron para construir algo y resolver así su problema.</p>
             <p style="margin-top:10px">Cuanto más avanzada es una sociedad, dispone de mejores herramientas, materiales y conocimientos para construir soluciones.</p>
             <p style="margin-top:10px">Luego se podría decir que:</p>
-            <div class="highlight-box"><p>La tecnología es el conjunto de conocimientos, herramientas y materiales que tiene a su disposición una sociedad en una época determinada, para construir objetos que solucione sus problemas técnicos.</p></div>
+            <div class="highlight-box"><p><i class="fas fa-book-open hl-icon"></i><span>La tecnología es el conjunto de conocimientos, herramientas y materiales que tiene a su disposición una sociedad en una época determinada, para construir objetos que solucione sus problemas técnicos.</span></p></div>
         </div>
         <div class="card">
             <p>Puedes encontrar más información sobre este tema en los siguientes enlaces y videos:</p>
@@ -466,10 +478,9 @@
                     <li><strong>Medio ambiente.</strong> La tecnología permite llevar a cabo una producción más elevada de la que el medio ambiente puede soportar. Esta situación trae consigo el incremento de desastres naturales.</li>
                 </ul>
             </div>
-            <div class="env-note"><p>En general, siempre que se construye algo usando la tecnología, al mismo tiempo se está dañando al medio ambiente (Contaminación del aire, del agua o del terreno, sobreexplotación de recursos naturales, exterminio de especies animales y/o vegetales, etc.)</p></div>
+            <div class="env-note"><p><i class="fas fa-exclamation-triangle warn-icon"></i><span>En general, siempre que se construye algo usando la tecnología, al mismo tiempo se está dañando al medio ambiente (Contaminación del aire, del agua o del terreno, sobreexplotación de recursos naturales, exterminio de especies animales y/o vegetales, etc.)</span></p></div>
         </div>
 
-        <!-- VÍDEO CENTRADO SOBRE "EN GENERAL" -->
         <div class="video-centered">
             <div class="video-card">
                 <div class="video-wrapper">
@@ -485,35 +496,50 @@
 
     <section class="content-section">
         <h2 class="section-title"><i class="fas fa-tools"></i> ¿Cómo trabajamos en Tecnología?</h2>
-        <div class="card">
-            <p>Tecnología y Digitalización es una de las materias comunes obligatorias en 2º y 3º ESO.</p>
-            <p style="margin-top:10px">Tecnología es una materia optativa en 4º ESO y está diseñada para el alumnado que piensa continuar sus estudios el itinerario de Ciclos Formativos o en el Bachillerato tecnológico.</p>
-            <p style="margin-top:10px">A través de situaciones de aprendizaje, se introducirán los contenidos y se realizarán actividades de consolidación tanto en clase como en el taller de tecnología.</p>
-            <p style="margin-top:10px">En tecnología empleamos el método de proyectos para aplicar los conocimientos adquiridos, mediante la construcción de maquetas de objetos o sistemas técnicos en el taller de tecnología.</p>
-            <p style="margin-top:10px">Además, en todos los niveles se usan las TIC, con el estudio y empleo de aplicaciones informáticas útiles en la edición y presentación de trabajos escritos y online, así como para búsqueda de información en Internet y el uso de simuladores.</p>
-            <p style="margin-top:10px">Y por último, también se estudiará algo de robótica y programación.</p>
+        <div class="card card-with-image">
+            <div class="card-text">
+                <p>Tecnología y Digitalización es una de las materias comunes obligatorias en 2º y 3º ESO.</p>
+                <p style="margin-top:10px">Tecnología es una materia optativa en 4º ESO y está diseñada para el alumnado que piensa continuar sus estudios el itinerario de Ciclos Formativos o en el Bachillerato tecnológico.</p>
+                <p style="margin-top:10px">A través de situaciones de aprendizaje, se introducirán los contenidos y se realizarán actividades de consolidación tanto en clase como en el taller de tecnología.</p>
+                <p style="margin-top:10px">En tecnología empleamos el método de proyectos para aplicar los conocimientos adquiridos, mediante la construcción de maquetas de objetos o sistemas técnicos en el taller de tecnología.</p>
+                <p style="margin-top:10px">Además, en todos los niveles se usan las TIC, con el estudio y empleo de aplicaciones informáticas útiles en la edición y presentación de trabajos escritos y online, así como para búsqueda de información en Internet y el uso de simuladores.</p>
+                <p style="margin-top:10px">Y por último, también se estudiará algo de robótica y programación.</p>
+            </div>
+            <div class="card-image">
+                <img src="https://z-cdn-media.chatglm.cn/files/960a802a-135b-4c0c-a7d3-f348095c8d7f.png?auth_key=1877217108-d4556a4ecf3a47d1938a4b9e5f4803d0-0-2cd8c202f553dedc7ba5d4bbf4287ed6" alt="Persona con casco y herramientas de trabajo">
+            </div>
         </div>
     </section>
     <div class="section-sep"></div>
 
     <section class="content-section">
         <h2 class="section-title"><i class="fas fa-robot"></i> ¿Cómo trabajamos en Computación y Robótica?</h2>
-        <div class="card">
-            <p>Computación y Robótica es una materia optativa que se imparte en los cursos de 1º, 2º y 3º de la ESO.</p>
-            <p style="margin-top:10px">En Computación y Robótica también se utiliza el método de proyectos, iniciando al alumnado en los lenguajes de programación, construyendo pequeños robots y programando el código para que sigan sus instrucciones.</p>
-            <p style="margin-top:10px">En esta materia se utiliza el pensamiento computacional, que hace referencia a una forma de abordar los problemas y los sistemas, de manera que pueda utilizarse un ordenador para ayudarnos a solucionarlos y/o a comprenderlos.</p>
-            <p style="margin-top:10px">Mediante el pensamiento computacional, se aprende a dividir problemas complejos en otros más pequeños (descomposición), a reconocer patrones (identificación de patrones), a identificar los aspectos relevantes para resolver un problema (abstracción) o a establecer las normas o instrucciones que deben seguirse para alcanzar el efecto deseado (diseño de un algoritmo).</p>
-            <p style="margin-top:10px">El pensamiento computacional ayuda a ser más ordenado y metódico en general, lo que puede ser positivo para todas las materias.</p>
+        <div class="card card-with-image">
+            <div class="card-text">
+                <p>Computación y Robótica es una materia optativa que se imparte en los cursos de 1º, 2º y 3º de la ESO.</p>
+                <p style="margin-top:10px">En Computación y Robótica también se utiliza el método de proyectos, iniciando al alumnado en los lenguajes de programación, construyendo pequeños robots y programando el código para que sigan sus instrucciones.</p>
+                <p style="margin-top:10px">En esta materia se utiliza el pensamiento computacional, que hace referencia a una forma de abordar los problemas y los sistemas, de manera que pueda utilizarse un ordenador para ayudarnos a solucionarlos y/o a comprenderlos.</p>
+                <p style="margin-top:10px">Mediante el pensamiento computacional, se aprende a dividir problemas complejos en otros más pequeños (descomposición), a reconocer patrones (identificación de patrones), a identificar los aspectos relevantes para resolver un problema (abstracción) o a establecer las normas o instrucciones que deben seguirse para alcanzar el efecto deseado (diseño de un algoritmo).</p>
+                <p style="margin-top:10px">El pensamiento computacional ayuda a ser más ordenado y metódico en general, lo que puede ser positivo para todas las materias.</p>
+            </div>
+            <div class="card-image">
+                <img src="https://z-cdn-media.chatglm.cn/files/99ea7355-3305-4115-8894-1d893139c44d.png?auth_key=1877217108-4f8fa3b8a15a4fa1b5dde34ce2592b8d-0-030520ed5b6a5ad1dcd51fc5db3308cc" alt="Persona mostrando un diagrama de flujo">
+            </div>
         </div>
     </section>
     <div class="section-sep"></div>
 
     <section class="content-section">
         <h2 class="section-title"><i class="fas fa-laptop"></i> ¿Cómo trabajamos en Digitalización?</h2>
-        <div class="card">
-            <p>Digitalización es una asignatura optativa de 4º ESO. Es un área imprescindible para desenvolverse en la sociedad actual.</p>
-            <p style="margin-top:10px">Todas las clases se realizan con el ordenador y en ellas se tratan temas de hardware y software, creación y organización de documentos digitales, interacción en red o ciberseguridad.</p>
-            <p style="margin-top:10px">En clase se realizan actividades en formato digital y se trabajará mediante situaciones de aprendizaje que propicien el aprendizaje de alumnado.</p>
+        <div class="card card-with-image">
+            <div class="card-text">
+                <p>Digitalización es una asignatura optativa de 4º ESO. Es un área imprescindible para desenvolverse en la sociedad actual.</p>
+                <p style="margin-top:10px">Todas las clases se realizan con el ordenador y en ellas se tratan temas de hardware y software, creación y organización de documentos digitales, interacción en red o ciberseguridad.</p>
+                <p style="margin-top:10px">En clase se realizan actividades en formato digital y se trabajará mediante situaciones de aprendizaje que propicien el aprendizaje de alumnado.</p>
+            </div>
+            <div class="card-image">
+                <img src="https://z-cdn-media.chatglm.cn/files/bda9aeb6-40fc-4cbd-9c5c-c1d982439729.png?auth_key=1877217108-432ecd0776bf4c7bb605f32d87c53e14-0-e8c194b5479ac59ef0f1ab3d84e860df" alt="Persona usando un ordenador portátil">
+            </div>
         </div>
     </section>
     <div class="section-sep"></div>
@@ -654,7 +680,10 @@
 </main>
 
 <footer class="site-footer">
-    <p>© 2025 MIGUELTECNOLOGIA — Todos los derechos reservados</p>
+    <div class="footer-cc">
+        <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"><img alt="Licencia Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a>
+        <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">MIGUELTECNOLOGIA está bajo licencia <span style="text-decoration:underline">Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</span>.</a>
+    </div>
 </footer>
 
 <script>
